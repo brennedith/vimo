@@ -14,7 +14,7 @@ const LoginForm = ({ history }) => {
       username,
       password
     })
-      .then(user => {
+      .then(({ data: user }) => {
         localStorage.setItem('userId', user._id);
         history.push('/feed'); //TODO: Change to after login route
       })
