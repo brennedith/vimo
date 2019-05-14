@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
+const { ObjectId } = Schema.Types;
 
 /*
 TODO: Make fields required
@@ -7,8 +8,15 @@ TODO: Make fields required
 
 const messageSchema = new Schema(
   {
-    to: String, // TODO: Ref User
-    from: String, // TODO: Ref User
+    from: {
+      type: ObjectId,
+      ref: 'User',
+      required: true
+    },
+    to: {
+      type: ObjectId,
+      ref: 'User'
+    },
     content: String, // TODO: Ref Content?
     status: {
       type: String,

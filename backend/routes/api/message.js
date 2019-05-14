@@ -25,7 +25,10 @@ router.post('/', (req, res, next) => {
 });
 
 router.get('/', (req, res, next) => {
-  Message.find() //TODO: Return only active messages
+  const { _id } = req.user;
+
+  Message.find({ from: _id }) //TODO: Return only active messages
+    .populate(['from', 'to'])
     .then(message => res.status(200).json(message))
     .catch(err => res.status(500).json(err));
 });
