@@ -6,6 +6,7 @@ const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 const logger = require('morgan');
 const sassMiddleware = require('node-sass-middleware');
 
@@ -46,6 +47,14 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Configure CORS
+app.use(
+  cors({
+    credentials: true,
+    origin: ['http://localhost:3000'] // TODO: Update origin
+  })
+);
 
 // Other configurations
 app.use(logger('dev'));
