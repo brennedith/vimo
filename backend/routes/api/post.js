@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const Message = require('../../models/message');
+const Post = require('../../models/post');
 
 /*
 TODO: Add auth
@@ -10,7 +10,7 @@ TODO: Add auth
 router.post('/', (req, res, next) => {
   const { to, from, content, expiry, longitude, latitude } = req.body;
 
-  Message.create({
+  Post.create({
     to,
     from,
     content,
@@ -20,34 +20,32 @@ router.post('/', (req, res, next) => {
       coordinates: [longitude, latitude]
     }
   })
-    .then(message => res.status(200).json(message))
+    .then(post => res.status(200).json(post))
     .catch(err => res.status(500).json(err));
 });
 
 router.get('/', (req, res, next) => {
   const { _id } = req.user;
 
-  Message.find({ from: _id }) //TODO: Return only active messages
+  Post.find({ from: _id }) //TODO: Return only active posts
     .populate(['from', 'to'])
-    .then(message => res.status(200).json(message))
+    .then(post => res.status(200).json(post))
     .catch(err => res.status(500).json(err));
 });
 
 router.patch('/:id', (req, res, next) => {
-  // V1: Users will not be allowed to update messages
+  // V1: Users will not be allowed to update posts
 });
 
 router.delete('/:id', (req, res, next) => {
   const { id } = req.params;
-  Message.findByIdAndDelete(id)
-    .then(message => {
-      if (!message) {
-        return res
-          .status(404)
-          .json({ message: 'That message does not exists.' });
+  Post.findByIdAndDelete(id)
+    .then(post => {
+      if (!post) {
+        return res.status(404).json({ post: 'That post does not exists.' });
       }
 
-      res.status(200).json(message);
+      res.status(200).json(post);
     })
     .catch(err => res.status(500).json(err));
 });

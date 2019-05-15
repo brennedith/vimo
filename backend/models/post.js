@@ -6,7 +6,7 @@ const { ObjectId } = Schema.Types;
 TODO: Make fields required
 */
 
-const messageSchema = new Schema(
+const postSchema = new Schema(
   {
     from: {
       type: ObjectId,
@@ -38,8 +38,8 @@ const messageSchema = new Schema(
   },
   { timestamps: true }
 );
-messageSchema.index({
+postSchema.index({
   loc: '2dsphere'
 });
 
-module.exports = mongoose.model('Message', messageSchema);
+module.exports = mongoose.model('Post', postSchema);

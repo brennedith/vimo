@@ -73,6 +73,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', require('./routes/index'));
 app.use('/api/auth', require('./routes/api/auth'));
-app.use('/api/message', require('./routes/api/message'));
+app.use('/api/post', require('./routes/api/post'));
 
 module.exports = app;
