@@ -52,7 +52,11 @@ app.use(passport.session());
 app.use(
   cors({
     credentials: true,
-    origin: ['http://localhost:3000'] // TODO: Update origin
+    origin: [
+      'http://localhost:3000',
+      'https://vimo-v1.netlify.com',
+      'https://vimo.space'
+    ] // TODO: Update origin
   })
 );
 
