@@ -1,5 +1,5 @@
 const config = {
-  endpoint: 'http://localhost:5000'
+  endpoint: 'https://vimo-backend.herokuapp.com'
 };
 
 export default config;
