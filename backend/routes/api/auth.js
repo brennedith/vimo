@@ -24,11 +24,16 @@ router.post('/signup', (req, res, next) => {
 
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user) => {
-    if (err) return res.status(403).json(err);
+    if (err) {
+      return res.status(403).json({ message: 'Sorry, there was an error' });
+    }
 
     req.logIn(user, err => {
-      if (err) return res.status(500).json(err);
-
+      if (err) {
+        return res
+          .status(500)
+          .json({ message: 'Incorrect username or password.' });
+      }
       res.status(200).json(user);
     });
   })(req, res, next);
