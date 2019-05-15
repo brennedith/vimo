@@ -5,6 +5,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import Home from './pages/Home';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
+import NewPost from './pages/NewPost';
 
 const App = () => {
   return (
@@ -12,6 +13,7 @@ const App = () => {
       <Route exact path="/" component={Home} />
       <Route path="/signup" component={Signup} />
       <Route path="/login" component={Login} />
+      <Route path="/post/new" component={NewPost} />
     </Router>
   );
 };

@@ -4,7 +4,7 @@ import config from './config';
 
 const { endpoint } = config;
 
-class Auth {
+class Post {
   constructor(baseURL) {
     this.service = axios.create({
       baseURL,
@@ -12,31 +12,25 @@ class Auth {
     });
   }
 
-  signup(body) {
+  create(body) {
     const { service } = this;
-    const path = '/signup';
+    const path = '/';
     return service.post(path, body);
   }
 
-  login = body => {
-    const { service } = this;
-    const path = '/login';
-    return service.post(path, body);
-  };
-
-  user = () => {
+  get = () => {
     const { service } = this;
     const path = '/';
     return service.get(path);
   };
 
-  logout = () => {
+  delete = id => {
     const { service } = this;
-    const path = '/logout';
+    const path = `/${id}`;
     return service.get(path);
   };
 }
 
-const authService = new Auth(`${endpoint}/api/auth`);
+const postService = new Post(`${endpoint}/api/post`);
 
-export default authService;
+export default postService;
