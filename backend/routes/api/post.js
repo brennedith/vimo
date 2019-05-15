@@ -8,11 +8,12 @@ TODO: Add auth
 */
 
 router.post('/', (req, res, next) => {
-  const { to, from, content, expiry, longitude, latitude } = req.body;
+  const { _id } = req.user;
+  const { to, content, expiry, longitude, latitude } = req.body;
 
   Post.create({
     to,
-    from,
+    from: _id,
     content,
     //expiry, //TODO: Add expiry type conversion and validation
     loc: {
