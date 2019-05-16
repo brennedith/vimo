@@ -17,7 +17,7 @@ const postSchema = new Schema(
       type: ObjectId,
       ref: 'User'
     },
-    content: String, // TODO: Ref Content?
+    content: Object,
     status: {
       type: String,
       default: 'sending',
