@@ -11,10 +11,11 @@
 }
 
 .controls {
-  position: fixed;
+  position: absolute;
   bottom: 0;
   width: 100%;
   padding: 30px;
+  padding-top: 5px;
   display: flex;
   justify-content: space-around;
   align-items: center;

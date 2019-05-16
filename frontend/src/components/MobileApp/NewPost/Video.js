@@ -40,19 +40,20 @@ const Video = () => {
           video.srcObject = stream;
         });
     }
+    // eslint-disable-next-line
   }, [cameraIndex]); // TODO: Reference github issue
-
-  if (!cameras) return null;
 
   // Changes the cameraIndex
   const changeCamera = () => {
-    if (cameras.length > 0) {
-      setCameraIndex((cameraIndex + 1) % cameras.length);
-    }
+    setCameraIndex((cameraIndex + 1) % cameras.length);
   };
 
+  // Prevents rendering while the cameras are detected
+  if (!cameras) return null;
+
   // Mirrors the front facing camera, Chrome and Firefox mobile deal with the order of devices differently
-  const frontCamera = cameras.length === 0 ? 0 : window.chrome ? 0 : 1;
+  const multipleCameras = cameras.length > 1;
+  const frontCamera = !multipleCameras ? 0 : window.chrome ? 0 : 1;
   const style = {
     transform: cameraIndex === frontCamera ? 'rotateY(-180deg)' : ''
   };
@@ -60,9 +61,11 @@ const Video = () => {
   return (
     <section className="camera">
       <video ref={videoRef} autoPlay style={style} />
-      <button onClick={changeCamera} className="camera switch">
-        O
-      </button>
+      {multipleCameras && (
+        <button type="button" onClick={changeCamera} className="camera switch">
+          O
+        </button>
+      )}
     </section>
   );
 };

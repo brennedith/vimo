@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import TextArea from './TextArea';
 import Video from './Video';
 
-import { useLocation } from '../../services/customHooks';
-import PostService from '../../services/PostService';
+import { useLocation } from '../../../services/customHooks';
+import PostService from '../../../services/PostService';
 
 const NewPostForm = () => {
   const { latitude, longitude, accuracy, speed } = useLocation();
@@ -18,13 +18,13 @@ const NewPostForm = () => {
   };
 
   return (
-    <section style={{ height: '100vh' }}>
+    <>
       {message && <p className="notification is-danger">{message}</p>}
       {type === 'text' && (
         <TextArea handleSend={content => handleSend(content)} />
       )}
       {type === 'video' && <Video />}
-    </section>
+    </>
   );
 };
 

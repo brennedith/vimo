@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import './TextArea.css';
 
 const textStyles = [
-  //TODO: Add styles
+  //TODO: Add style<Route path="/app/new" component={NewPost} />s
   { background: 'red', color: 'white', fontFamily: 'Arial' },
   { background: 'white', color: 'red', fontFamily: 'Times New Roman' }
 ];
