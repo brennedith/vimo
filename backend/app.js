@@ -52,6 +52,7 @@ app.use(
     credentials: true,
     origin: [
       'http://localhost:3000',
+      'https://localhost:3000',
       'https://vimo-frontend.netlify.com',
       'https://vimo.space'
     ] // TODO: Update origin
