@@ -28,7 +28,7 @@ const SubmitForm = ({ history }) => {
       })
         .then(({ data: user }) => {
           localStorage.setItem('userId', user._id);
-          history.push('/feed'); //TODO: Change to after login route
+          history.push('/app/feed');
         })
         .catch(({ response: { data: err } }) => {
           setMessage(err.message);
