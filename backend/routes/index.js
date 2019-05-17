@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
+/* Redirects to Frontend */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.redirect(process.env.FRONTEND_URL);
 });
 
 module.exports = router;

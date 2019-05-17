@@ -4,11 +4,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
-const path = require('path');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const logger = require('morgan');
-const sassMiddleware = require('node-sass-middleware');
 
 const passport = require('./configs/passport');
 
@@ -65,15 +63,6 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(
-  sassMiddleware({
-    src: path.join(__dirname, 'public'),
-    dest: path.join(__dirname, 'public'),
-    indentedSyntax: true, // true = .sass and false = .scss
-    sourceMap: true
-  })
-);
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', require('./routes/index'));
 app.use('/api/auth', require('./routes/api/auth'));
