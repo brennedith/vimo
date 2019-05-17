@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 
 import TextArea from './TextArea';
 import Video from './Video';
 
-import { useLocation } from '../../../services/customHooks';
+import appContext from '../../../services/context';
 import PostService from '../../../services/PostService';
 
 const NewPostForm = () => {
-  const { latitude, longitude, accuracy, speed } = useLocation();
+  const { state } = useContext(appContext);
+  const { latitude, longitude, accuracy, speed } = state.coords;
   const [message, setMessage] = useState(null);
   const [type, setType] = useState('text'); // [text, photo, video, audio]
 

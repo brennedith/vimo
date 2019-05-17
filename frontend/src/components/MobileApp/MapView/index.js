@@ -3,6 +3,8 @@ import ReactMapGL, { NavigationControl, Marker } from 'react-map-gl';
 
 import appContext from '../../../services/context';
 
+import './index.css';
+
 const MapView = () => {
   const mapBoxToken = process.env.REACT_APP_MAPBOX_TOKEN;
   const { state, dispatch } = useContext(appContext);
@@ -35,8 +37,13 @@ const MapView = () => {
         mapStyle={'mapbox://styles/mapbox/streets-v11'}
         onViewportChange={({ zoom }) => updateZoom(zoom)}
       >
-        <Marker latitude={latitude} longitude={longitude}>
-          <div>x</div>
+        <Marker
+          latitude={latitude}
+          longitude={longitude}
+          offsetTop={-8}
+          offsetLeft={-8}
+        >
+          <div className="UserMarker" />
         </Marker>
         <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
           <NavigationControl
