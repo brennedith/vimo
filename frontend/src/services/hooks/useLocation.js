@@ -1,20 +1,19 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useContext } from 'react';
+
+import appContext from '../context';
 
 const useLocation = () => {
-  const [latitude, setLatitude] = useState(null);
-  const [longitude, setLongitude] = useState(null);
-  const [accuracy, setAccuracy] = useState(null);
-  const [speed, setSpeed] = useState(null);
+  const { dispatch } = useContext(appContext);
 
   useEffect(() => {
     const watchId = navigator.geolocation.watchPosition(
       position => {
         const { latitude, longitude, accuracy, speed } = position.coords;
 
-        setLatitude(latitude);
-        setLongitude(longitude);
-        setAccuracy(accuracy);
-        setSpeed(speed);
+        dispatch({
+          type: 'UPDATE_LOCATION',
+          payload: { latitude, longitude, accuracy, speed }
+        });
       },
       err => console.log(err), //TODO: handle error
       { enableHighAccuracy: true }
@@ -25,13 +24,6 @@ const useLocation = () => {
       navigator.geolocation.clearWatch(watchId);
     };
   });
-
-  return {
-    latitude,
-    longitude,
-    accuracy,
-    speed
-  };
 };
 
 export default useLocation;
