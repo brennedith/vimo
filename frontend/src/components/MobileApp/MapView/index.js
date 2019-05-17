@@ -43,6 +43,7 @@ const MapView = () => {
           offsetTop={-8}
           offsetLeft={-8}
         >
+          {/*TODO: Add accuracy representation */}
           <div className="UserMarker" />
         </Marker>
         <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
