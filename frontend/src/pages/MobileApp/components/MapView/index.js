@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import ReactMapGL, { NavigationControl, Marker } from 'react-map-gl';
 
-import appContext from '../../../services/context';
+import appContext from '../../../../services/context';
 
 import './index.css';
 

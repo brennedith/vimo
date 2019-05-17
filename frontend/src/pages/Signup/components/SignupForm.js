@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 
-import AuthService from '../services/AuthService';
+import AuthService from '../../../services/AuthService';
 
-const LoginForm = ({ history }) => {
+const SubmitForm = ({ history }) => {
   const [isFormDisabled, setIsFormDisabled] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordVerification, setPasswordVerification] = useState('');
   const [message, setMessage] = useState(null);
 
   const handleSubmit = e => {
@@ -17,8 +18,11 @@ const LoginForm = ({ history }) => {
       // Only visible for old browsers
       setMessage(`Uh? All fields must be filled 😮️.`);
       setIsFormDisabled(false);
+    } else if (password !== passwordVerification) {
+      setMessage(`Password and verification don't match 🤔️.`);
+      setIsFormDisabled(false);
     } else {
-      AuthService.login({
+      AuthService.signup({
         username,
         password
       })
@@ -56,11 +60,21 @@ const LoginForm = ({ history }) => {
           onChange={({ target }) => setPassword(target.value)}
         />
       </label>
+      <label>
+        Retype Password:{' '}
+        <input
+          type="password"
+          value={passwordVerification}
+          disabled={isFormDisabled}
+          required
+          onChange={({ target }) => setPasswordVerification(target.value)}
+        />
+      </label>
       <button type="submit" disabled={isFormDisabled}>
-        Log in
+        Sign up
       </button>
     </form>
   );
 };
 
-export default LoginForm;
+export default SubmitForm;

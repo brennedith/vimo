@@ -3,8 +3,8 @@ import React, { useState, useContext } from 'react';
 import TextArea from './TextArea';
 import Video from './Video';
 
-import appContext from '../../../services/context';
-import PostService from '../../../services/PostService';
+import appContext from '../../../../services/context';
+import PostService from '../../../../services/PostService';
 
 const NewPostForm = () => {
   const { state } = useContext(appContext);
