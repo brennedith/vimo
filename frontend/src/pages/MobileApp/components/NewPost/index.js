@@ -8,7 +8,7 @@ import PostService from '../../../../services/PostService';
 
 const NewPostForm = () => {
   const { state } = useContext(appContext);
-  const { latitude, longitude, accuracy, speed } = state.coords;
+  const { latitude, longitude, accuracy } = state.coords; //TODO: Verify accuracy use
   const [message, setMessage] = useState(null);
   const [type, setType] = useState('text'); // [text, photo, video, audio]
 

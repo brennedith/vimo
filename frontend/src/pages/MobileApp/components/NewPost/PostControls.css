@@ -1,0 +1,45 @@
+.controls {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 30px;
+  padding-top: 5px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.controls button {
+  background: transparent;
+  border: 0;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.controls .push {
+  width: 50px;
+  height: 50px;
+}
+
+.controls .accuracy-button {
+  width: 120px;
+  height: 120px;
+  font-size: 1.5em;
+  background: tomato;
+  color: white;
+  border-style: solid;
+  border-radius: 60px;
+}
+
+.controls .accuracy-button.bad {
+  border: 10px solid #991800;
+}
+
+.controls .styles {
+  width: 50px;
+  height: 50px;
+  background: black;
+  font-size: 1.5em;
+  color: white;
+  border: 5px solid rgba(200, 200, 200, 0.5);
+  border-radius: 10px;
+}

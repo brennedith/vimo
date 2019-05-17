@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
+import PostControls from './PostControls';
+
 import './TextArea.css';
 
 const textStyles = [
@@ -49,22 +51,16 @@ const TextArea = ({ handleSend }) => {
         style={{ ...style, fontSize }}
         onChange={({ target }) => setContent(target.value)}
       />
-      <div className="controls">
-        <div className="styles" />
-        <button type="button" className="send" onClick={sendContent}>
-          Send
-          <br />
-          VIMO
-        </button>
+      <PostControls handleSend={sendContent}>
         <button
           type="button"
-          className="styles text"
+          className="styles"
           style={style}
           onClick={cycleStyles}
         >
           A
         </button>
-      </div>
+      </PostControls>
     </>
   );
 };
