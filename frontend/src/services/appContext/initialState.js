@@ -8,6 +8,9 @@ const initialState = {
   },
   map: {
     zoom: 13
+  },
+  post: {
+    type: 'video'
   }
 };
 

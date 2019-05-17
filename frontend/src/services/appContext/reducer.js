@@ -12,6 +12,13 @@ const reducer = (state, action) => {
           zoom: action.payload
         }
       };
+    case 'SWITCH_POST_TYPE':
+      return {
+        ...state,
+        post: {
+          type: action.payload
+        }
+      };
     default:
       return state;
   }

@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 
+import PostControls from './PostControls';
+
 import './Video.css';
 
 const Video = () => {
@@ -59,14 +61,22 @@ const Video = () => {
   };
 
   return (
-    <section className="camera">
+    <>
       <video ref={videoRef} autoPlay style={style} />
-      {multipleCameras && (
-        <button type="button" onClick={changeCamera} className="camera switch">
-          O
-        </button>
-      )}
-    </section>
+      <PostControls>
+        {
+          /*multipleCameras &&*/ <button
+            type="button"
+            onClick={changeCamera}
+            className="camera"
+          >
+            <span className="icon">
+              <i className="fas fa-sync" />
+            </span>
+          </button>
+        }
+      </PostControls>
+    </>
   );
 };
 

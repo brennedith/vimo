@@ -12,11 +12,7 @@ const Controls = ({ children, handleSend }) => {
 
   return (
     <div className="controls">
-      <div className="push">
-        {/* TODO: Decide to show or not the accuracy */}
-        <p>Accuracy:</p>
-        <p>{accuracy.toFixed()} mts</p>
-      </div>
+      <div className="push" />
       <button
         type="button"
         className={`accuracy-button ${accuracyClass}`}

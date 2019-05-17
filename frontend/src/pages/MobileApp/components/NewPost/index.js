@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 
+import TypesControl from './TypesControl';
 import TextArea from './TextArea';
 import Video from './Video';
 
@@ -8,9 +9,9 @@ import PostService from '../../../../services/PostService';
 
 const NewPostForm = () => {
   const { state } = useContext(appContext);
+  const { type } = state.post;
   const { latitude, longitude, accuracy } = state.coords; //TODO: Verify accuracy use
   const [message, setMessage] = useState(null);
-  const [type, setType] = useState('text'); // [text, photo, video, audio]
 
   const handleSend = content => {
     PostService.create({ content, longitude, latitude, accuracy })
@@ -21,10 +22,10 @@ const NewPostForm = () => {
   return (
     <>
       {message && <p className="notification is-danger">{message}</p>}
-      {type === 'text' && (
-        <TextArea handleSend={content => handleSend(content)} />
-      )}
-      {type === 'video' && <Video />}
+      {type === 'video' && <Video type="video" handleSend={handleSend} />}
+      {type === 'text' && <TextArea handleSend={handleSend} />}
+      {type === 'photo' && <Video type="photo" handleSend={handleSend} />}
+      <TypesControl />
     </>
   );
 };
