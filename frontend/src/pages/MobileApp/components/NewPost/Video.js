@@ -4,7 +4,7 @@ import PostControls from './PostControls';
 
 import './Video.css';
 
-const Video = () => {
+const Video = ({ handleSend }) => {
   const videoRef = useRef();
   const [cameras, setCameras] = useState(null);
   const [cameraIndex, setCameraIndex] = useState(null);
@@ -50,6 +50,27 @@ const Video = () => {
     setCameraIndex((cameraIndex + 1) % cameras.length);
   };
 
+  const sendContent = () => {
+    const opts = { mimeType: 'video/webm' };
+    const rec = new MediaRecorder(videoRef.current.srcObject, opts);
+    const blobs = [];
+
+    rec.ondataavailable = e =>
+      e.data && e.data.size > 0 ? blobs.push(e.data) : null;
+
+    rec.onstop = () => {
+      const blob = new Blob(blobs, { type: 'video/mp4' });
+      const file = new File([blob], 'video.mp4');
+
+      handleSend({
+        media: file
+      });
+    };
+
+    rec.start();
+    setTimeout(() => rec.stop(), 10000);
+  };
+
   // Prevents rendering while the cameras are detected
   if (!cameras) return null;
 
@@ -63,7 +84,7 @@ const Video = () => {
   return (
     <>
       <video ref={videoRef} autoPlay style={style} />
-      <PostControls>
+      <PostControls handleSend={sendContent}>
         {
           /*multipleCameras &&*/ <button
             type="button"

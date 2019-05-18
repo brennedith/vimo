@@ -14,9 +14,28 @@ const NewPostForm = () => {
   const [message, setMessage] = useState(null);
 
   const handleSend = content => {
-    PostService.create({ content, longitude, latitude, accuracy })
+    let body;
+
+    if (type === 'text') {
+      body = {
+        type,
+        longitude,
+        latitude,
+        accuracy,
+        content
+      };
+    } else {
+      body = new FormData();
+      body.append('type', type);
+      body.append('longitude', longitude);
+      body.append('latitude', latitude);
+      body.append('accuracy', accuracy);
+      body.append('media', content.media);
+    }
+
+    PostService.create(type, body)
       .then(({ data: post }) => setMessage(post._id))
-      .catch(({ response }) => setMessage(response));
+      .catch(({ response }) => console.log(response));
   };
 
   return (

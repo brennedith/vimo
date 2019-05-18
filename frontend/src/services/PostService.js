@@ -12,9 +12,9 @@ class Post {
     });
   }
 
-  create(body) {
+  create(type, body) {
     const { service } = this;
-    const path = '/';
+    const path = `/${type}`;
     return service.post(path, body);
   }
 

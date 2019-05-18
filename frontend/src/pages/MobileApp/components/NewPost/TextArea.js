@@ -31,7 +31,7 @@ const TextArea = ({ handleSend }) => {
   const sendContent = () => {
     const bodyContent = {
       type: 'text',
-      content,
+      text: content,
       style: {
         ...style,
         fontSize
