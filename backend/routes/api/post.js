@@ -9,28 +9,46 @@ const Post = require('../../models/post');
 TODO: Add auth
 */
 
-router.post(
-  '/',
-  imageUpload.single('image'),
-  videoUpload.single('video'),
-  (req, res, next) => {
-    const { _id } = req.user;
-    const { to, content, expiry, longitude, latitude } = req.body;
-    console.log(req.body);
-    Post.create({
-      to,
-      from: _id,
-      content,
-      //expiry, //TODO: Add expiry type conversion and validation
-      loc: {
-        type: 'Point',
-        coordinates: [Number(longitude), Number(latitude)]
-      }
-    })
-      .then(post => res.status(200).json(post))
-      .catch(err => res.status(500).json(err));
+router.post('/text', newPost);
+router.post('/video', videoUpload.single('media'), newPost);
+router.post('/photo', imageUpload.single('media'), newPost);
+function newPost(req, res, next) {
+  const { _id } = req.user;
+  const {
+    to,
+    type,
+    content: rawContent,
+    expiry,
+    longitude,
+    latitude
+  } = req.body;
+  let content;
+
+  if (type === 'text') {
+    content = {
+      type,
+      ...rawContent
+    };
+  } else {
+    content = {
+      type,
+      mediaURL: req.file.secure_url
+    };
   }
-);
+
+  Post.create({
+    to,
+    from: _id,
+    content,
+    //expiry, //TODO: Add expiry type conversion and validation
+    loc: {
+      type: 'Point',
+      coordinates: [Number(longitude), Number(latitude)]
+    }
+  })
+    .then(post => res.status(200).json(post))
+    .catch(err => res.status(500).json(err));
+}
 
 router.get('/', (req, res, next) => {
   const { _id } = req.user;
