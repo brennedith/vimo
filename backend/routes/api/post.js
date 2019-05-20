@@ -18,6 +18,7 @@ function newPost(req, res, next) {
     to,
     type,
     content: rawContent,
+    frontCamera,
     expiry,
     longitude,
     latitude
@@ -32,6 +33,7 @@ function newPost(req, res, next) {
   } else {
     content = {
       type,
+      frontCamera: Boolean(frontCamera),
       mediaURL: req.file.secure_url
     };
   }

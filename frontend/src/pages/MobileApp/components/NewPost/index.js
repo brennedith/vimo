@@ -31,10 +31,11 @@ const NewPostForm = () => {
       body.append('latitude', latitude);
       body.append('accuracy', accuracy);
       body.append('media', content.media);
+      body.append('frontCamera', content.frontCamera);
     }
 
     PostService.create(type, body)
-      .then(({ data: post }) => setMessage(post._id))
+      .then(({ data: post }) => console.log(post))
       .catch(({ response }) => console.log(response));
   };
 

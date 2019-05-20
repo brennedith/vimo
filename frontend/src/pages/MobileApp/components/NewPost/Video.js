@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 
+import { useInterval } from '../../../../services/customHooks';
 import PostControls from './PostControls';
 
 import './Video.css';
@@ -7,8 +8,20 @@ import './Video.css';
 const Video = ({ type, handleSend }) => {
   const isVideo = type === 'video';
   const videoRef = useRef();
+
   const [cameras, setCameras] = useState(null);
   const [cameraIndex, setCameraIndex] = useState(null);
+
+  const [recording, setRecording] = useState(false);
+  const [seconds, setSeconds] = useState(10);
+
+  // Countdown interval, only if recording
+  useInterval(
+    () => {
+      setSeconds(seconds - 1);
+    },
+    recording ? 1000 : null
+  );
 
   // Registers all available video devices
   useEffect(() => {
@@ -52,7 +65,7 @@ const Video = ({ type, handleSend }) => {
   };
 
   // Sends the content based on the type of media
-  const sendContent = () => {
+  const sendContent = frontCamera => {
     const video = videoRef.current;
 
     if (isVideo) {
@@ -60,20 +73,31 @@ const Video = ({ type, handleSend }) => {
       const rec = new MediaRecorder(video.srcObject, opts);
       const blobs = [];
 
-      rec.ondataavailable = e =>
-        e.data && e.data.size > 0 ? blobs.push(e.data) : null;
+      rec.ondataavailable = e => {
+        if (e.data && e.data.size > 0) {
+          blobs.push(e.data);
+        }
+      };
 
       rec.onstop = () => {
         const blob = new Blob(blobs, { type: 'video/mp4' });
         const file = new File([blob], 'video.mp4');
 
         handleSend({
-          media: file
+          media: file,
+          frontCamera
         });
       };
 
       rec.start();
-      setTimeout(() => rec.stop(), 10000);
+
+      setRecording(true);
+
+      setTimeout(() => {
+        rec.stop();
+        setRecording(false);
+        setSeconds(10);
+      }, 11000);
     } else {
       const canvas = document.createElement('canvas');
       canvas.width = video.videoWidth;
@@ -84,7 +108,8 @@ const Video = ({ type, handleSend }) => {
         const file = new File([blob], 'photo.jpeg');
 
         handleSend({
-          media: file
+          media: file,
+          frontCamera
         });
       }, 'image/jpeg');
     }
@@ -105,11 +130,11 @@ const Video = ({ type, handleSend }) => {
     <>
       <video ref={videoRef} autoPlay style={style} />
       <PostControls
-        handleSend={sendContent}
+        handleSend={() => sendContent(frontCamera)}
         leftPanel={
           isVideo && (
             <button type="button" className="round-block">
-              10
+              {seconds}
             </button>
           )
         }
