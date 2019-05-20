@@ -2,11 +2,9 @@ const express = require('express');
 const passport = require('passport');
 const router = express.Router();
 
-const User = require('../../models/user');
+const { isAuth } = require('../../configs/middlewares');
 
-/*
-TODO: Add auth
-*/
+const User = require('../../models/user');
 
 router.post('/signup', (req, res, next) => {
   const { username, password } = req.body;
@@ -39,16 +37,13 @@ router.post('/login', (req, res, next) => {
   })(req, res, next);
 });
 
-router.get('/', (req, res, next) => {
+router.get('/', isAuth, (req, res, next) => {
   const { user } = req;
-  if (!user) {
-    return res.status(403).json({ message: 'You need to login first.' });
-  }
 
   res.status(200).json(user);
 });
 
-router.get('/logout', (req, res, next) => {
+router.get('/logout', isAuth, (req, res, next) => {
   req.logOut();
   res.status(200).json({ message: 'Ok' });
 });

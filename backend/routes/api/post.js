@@ -1,17 +1,14 @@
 const express = require('express');
 const router = express.Router();
 
+const { isAuth } = require('../../configs/middlewares');
 const { imageUpload, videoUpload } = require('../../configs/storage');
 
 const Post = require('../../models/post');
 
-/*
-TODO: Add auth
-*/
-
-router.post('/text', newPost);
-router.post('/video', videoUpload.single('media'), newPost);
-router.post('/photo', imageUpload.single('media'), newPost);
+router.post('/text', isAuth, newPost);
+router.post('/video', isAuth, videoUpload.single('media'), newPost);
+router.post('/photo', isAuth, imageUpload.single('media'), newPost);
 function newPost(req, res, next) {
   const { _id } = req.user;
   const {
@@ -52,7 +49,7 @@ function newPost(req, res, next) {
     .catch(err => res.status(500).json(err));
 }
 
-router.get('/', (req, res, next) => {
+router.get('/', isAuth, (req, res, next) => {
   const { _id } = req.user;
 
   Post.find({ from: _id }) //TODO: Return only active posts
@@ -61,11 +58,7 @@ router.get('/', (req, res, next) => {
     .catch(err => res.status(500).json(err));
 });
 
-router.patch('/:id', (req, res, next) => {
-  // V1: Users will not be allowed to update posts
-});
-
-router.delete('/:id', (req, res, next) => {
+router.delete('/:id', isAuth, (req, res, next) => {
   const { id } = req.params;
   Post.findByIdAndDelete(id)
     .then(post => {
