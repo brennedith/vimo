@@ -6,6 +6,7 @@ const { imageUpload, videoUpload } = require('../../configs/storage');
 
 const Post = require('../../models/post');
 
+/* CREATE: Post types: text, video, photo*/
 router.post('/text', isAuth, newPost);
 router.post('/video', isAuth, videoUpload.single('media'), newPost);
 router.post('/photo', isAuth, imageUpload.single('media'), newPost);
@@ -49,12 +50,78 @@ function newPost(req, res, next) {
     .catch(err => res.status(500).json(err));
 }
 
-router.get('/', isAuth, (req, res, next) => {
+/* READ: All user created posts */
+router.get('/sent', isAuth, (req, res, next) => {
   const { _id } = req.user;
 
   Post.find({ from: _id }) //TODO: Return only active posts
-    .populate(['from', 'to'])
-    .then(post => res.status(200).json(post))
+    .populate('to')
+    .then(posts => res.status(200).json(posts))
+    .catch(err => res.status(500).json(err));
+});
+
+/* READ: All posts sent to the user */
+router.get('/received', isAuth, (req, res, next) => {
+  const { _id } = req.user;
+
+  Post.find({ to: _id }) //TODO: Return only active posts
+    .populate('from')
+    .then(posts => {
+      // Filters post information
+      filteredPosts = posts.map(post => {
+        const { _id, from, status, loc, expiry, content } = post;
+
+        return {
+          _id,
+          from,
+          status,
+          loc: {
+            coordinates: loc.coordinates
+          },
+          expiry,
+          content: {
+            type: content.type
+          }
+        };
+      });
+
+      res.status(200).json(filteredPosts);
+    })
+    .catch(err => res.status(500).json(err));
+});
+
+/* READ: All public posts and posts sent to user */
+router.get('/nearby', isAuth, (req, res, next) => {
+  const { longitude, latitude } = req.body;
+  const { _id } = req.user;
+
+  Post.aggregate([
+    {
+      // Finds nearby posts
+      $geoNear: {
+        near: {
+          type: 'Point',
+          coordinates: [longitude, latitude]
+        },
+        distanceField: 'distance',
+        spherical: true,
+        maxDistance: 500,
+        query: {
+          $or: [{ to: _id }, { to: { $exists: false } }]
+        }
+      }
+    },
+    {
+      // Populates "from"
+      $lookup: {
+        from: 'users',
+        localField: 'from',
+        foreignField: '_id',
+        as: 'from'
+      }
+    }
+  ]) //TODO: Return only active posts
+    .then(posts => res.status(200).json(posts))
     .catch(err => res.status(500).json(err));
 });
 
