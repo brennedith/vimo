@@ -4,10 +4,15 @@ import PostControls from './PostControls';
 
 import './TextArea.css';
 
+const linearGradient = (start, stop) => {
+  return `linear-gradient(135deg, ${start}, ${stop})`;
+};
 const textStyles = [
-  //TODO: Add style<Route path="/app/new" component={NewPost} />s
-  { background: 'red', color: 'white', fontFamily: 'Arial' },
-  { background: 'white', color: 'red', fontFamily: 'Times New Roman' }
+  { background: linearGradient('#00c3ff', '#0071ff') },
+  { background: linearGradient('#ffc000', '#ff7010') },
+  { background: linearGradient('#13cf18', '#20cef3') },
+  { background: linearGradient('#8860fa', '#240169') },
+  { background: linearGradient('#ff2f2f', '#ff8f88') }
 ];
 
 const TextArea = ({ handleSend }) => {
