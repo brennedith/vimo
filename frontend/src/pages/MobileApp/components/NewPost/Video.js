@@ -4,7 +4,8 @@ import PostControls from './PostControls';
 
 import './Video.css';
 
-const Video = ({ handleSend }) => {
+const Video = ({ type, handleSend }) => {
+  const isVideo = type === 'video';
   const videoRef = useRef();
   const [cameras, setCameras] = useState(null);
   const [cameraIndex, setCameraIndex] = useState(null);
@@ -50,25 +51,43 @@ const Video = ({ handleSend }) => {
     setCameraIndex((cameraIndex + 1) % cameras.length);
   };
 
+  // Sends the content based on the type of media
   const sendContent = () => {
-    const opts = { mimeType: 'video/webm' };
-    const rec = new MediaRecorder(videoRef.current.srcObject, opts);
-    const blobs = [];
+    const video = videoRef.current;
 
-    rec.ondataavailable = e =>
-      e.data && e.data.size > 0 ? blobs.push(e.data) : null;
+    if (isVideo) {
+      const opts = { mimeType: 'video/webm' };
+      const rec = new MediaRecorder(video.srcObject, opts);
+      const blobs = [];
 
-    rec.onstop = () => {
-      const blob = new Blob(blobs, { type: 'video/mp4' });
-      const file = new File([blob], 'video.mp4');
+      rec.ondataavailable = e =>
+        e.data && e.data.size > 0 ? blobs.push(e.data) : null;
 
-      handleSend({
-        media: file
-      });
-    };
+      rec.onstop = () => {
+        const blob = new Blob(blobs, { type: 'video/mp4' });
+        const file = new File([blob], 'video.mp4');
 
-    rec.start();
-    setTimeout(() => rec.stop(), 10000);
+        handleSend({
+          media: file
+        });
+      };
+
+      rec.start();
+      setTimeout(() => rec.stop(), 10000);
+    } else {
+      const canvas = document.createElement('canvas');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      canvas.getContext('2d').drawImage(video, 0, 0);
+
+      canvas.toBlob(blob => {
+        const file = new File([blob], 'photo.jpeg');
+
+        handleSend({
+          media: file
+        });
+      }, 'image/jpeg');
+    }
   };
 
   // Prevents rendering while the cameras are detected
@@ -76,27 +95,34 @@ const Video = ({ handleSend }) => {
 
   // Mirrors the front facing camera, Chrome and Firefox mobile deal with the order of devices differently
   const multipleCameras = cameras.length > 1;
-  const frontCamera = !multipleCameras ? 0 : window.chrome ? 0 : 1;
+  const frontCamera = !multipleCameras ? true : window.chrome ? true : false;
+  const frontCameraIndex = frontCamera ? 0 : 1;
   const style = {
-    transform: cameraIndex === frontCamera ? 'rotateY(-180deg)' : ''
+    transform: cameraIndex === frontCameraIndex ? 'rotateY(-180deg)' : ''
   };
 
   return (
     <>
       <video ref={videoRef} autoPlay style={style} />
-      <PostControls handleSend={sendContent}>
-        {
-          /*multipleCameras &&*/ <button
-            type="button"
-            onClick={changeCamera}
-            className="camera"
-          >
-            <span className="icon">
-              <i className="fas fa-sync" />
-            </span>
-          </button>
+      <PostControls
+        handleSend={sendContent}
+        leftPanel={
+          isVideo && (
+            <button type="button" className="round-block">
+              10
+            </button>
+          )
         }
-      </PostControls>
+        rightPanel={
+          multipleCameras && (
+            <button type="button" onClick={changeCamera} className="camera">
+              <span className="icon">
+                <i className="fas fa-sync" />
+              </span>
+            </button>
+          )
+        }
+      />
     </>
   );
 };

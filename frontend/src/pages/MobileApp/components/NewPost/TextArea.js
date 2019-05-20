@@ -51,16 +51,19 @@ const TextArea = ({ handleSend }) => {
         style={{ ...style, fontSize }}
         onChange={({ target }) => setContent(target.value)}
       />
-      <PostControls handleSend={sendContent}>
-        <button
-          type="button"
-          className="styles"
-          style={style}
-          onClick={cycleStyles}
-        >
-          A
-        </button>
-      </PostControls>
+      <PostControls
+        handleSend={sendContent}
+        rightPanel={
+          <button
+            type="button"
+            className="round-block"
+            style={style}
+            onClick={cycleStyles}
+          >
+            A
+          </button>
+        }
+      />
     </>
   );
 };

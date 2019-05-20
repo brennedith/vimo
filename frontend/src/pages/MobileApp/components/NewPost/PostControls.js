@@ -4,15 +4,16 @@ import appContext from '../../../../services/context';
 
 import './PostControls.css';
 
-const Controls = ({ children, handleSend }) => {
+const Controls = ({ children, handleSend, leftPanel, rightPanel }) => {
   const { state } = useContext(appContext);
   const { speed, accuracy } = state.coords;
 
+  /* TODO: Alert if accuracy is poor */
   const accuracyClass = accuracy > 50 ? 'bad' : 'good';
 
   return (
     <div className="controls">
-      <div className="push" />
+      {leftPanel ? leftPanel : <div className="push" />}
       <button
         type="button"
         className={`accuracy-button ${accuracyClass}`}
@@ -22,7 +23,7 @@ const Controls = ({ children, handleSend }) => {
         <br />
         VIMO
       </button>
-      {children}
+      {rightPanel ? rightPanel : <div className="push" />}
     </div>
   );
 };
