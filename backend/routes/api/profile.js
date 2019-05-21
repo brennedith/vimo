@@ -7,9 +7,12 @@ const { isAuth } = require('../../configs/middlewares');
 const User = require('../../models/user');
 
 router.get('/', isAuth, (req, res, next) => {
-  const { user } = req;
+  const { _id } = req.user;
 
-  res.status(200).json(user);
+  User.findById(_id)
+    .populate('friends')
+    .then(user => res.status(200).json(user))
+    .catch(err => res.status(500).json({ err }));
 });
 
 router.patch('/', avatarUpload.single('avatar'), isAuth, (req, res, next) => {
@@ -25,9 +28,7 @@ router.patch('/', avatarUpload.single('avatar'), isAuth, (req, res, next) => {
     },
     { new: true }
   )
-    .then(user => {
-      res.status(200).json(user);
-    })
+    .then(user => res.status(200).json(user))
     .catch(err => res.status(500).json({ err }));
 });
 

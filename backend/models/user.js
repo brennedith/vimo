@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const PLM = require('passport-local-mongoose');
 const { Schema } = mongoose;
+const { ObjectId } = Schema.Types;
 
 const userSchema = new Schema({
   username: {
@@ -8,6 +9,12 @@ const userSchema = new Schema({
     unique: true,
     required: true
   },
+  friends: [
+    {
+      type: ObjectId,
+      ref: 'User'
+    }
+  ],
   name: String,
   image_url: String
 });
