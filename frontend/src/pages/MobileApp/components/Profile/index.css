@@ -2,6 +2,23 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  padding-top: 100px;
   height: 100%;
+}
+
+.Profile .options {
+  justify-content: flex-start;
+  align-self: flex-end;
+  padding: 0 20px;
+}
+
+.Profile .options button {
+  background: transparent;
+  color: gray;
+  font-size: 1.6em;
+  border: 0;
+}
+
+.Profile .title {
+  margin: 40px 0;
 }
