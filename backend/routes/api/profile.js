@@ -12,7 +12,7 @@ router.get('/', isAuth, (req, res, next) => {
   res.status(200).json(user);
 });
 
-router.post('/', avatarUpload.single('avatar'), isAuth, (req, res, next) => {
+router.patch('/', avatarUpload.single('avatar'), isAuth, (req, res, next) => {
   const { _id } = req.user;
   const { name } = req.body;
   const image_url = req.file ? req.file.secure_url : '';
