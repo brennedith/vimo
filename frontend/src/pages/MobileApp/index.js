@@ -15,23 +15,41 @@ import PostService from '../../services/PostService';
 import { useLocation } from '../../services/customHooks';
 
 const MobileApp = () => {
-  const { dispatch } = useContext(appContext);
+  const { state, dispatch } = useContext(appContext);
+  const { status } = state.feed;
 
   useLocation();
 
   useEffect(() => {
-    PostService.getReceived().then(({ data: posts }) => {
-      dispatch({
-        type: 'LOAD_POSTS',
-        payload: { type: 'received', posts }
+    // Loads all sent and received posts
+    if (status === 'NOT_LOADED') {
+      const receivedPromise = PostService.getReceived();
+      const sentPromise = PostService.getSent();
+
+      Promise.all([receivedPromise, sentPromise]).then(([received, sent]) => {
+        const receivedPosts = received.data.map(post => {
+          post.type = 'received';
+          return post;
+        });
+        const sentPosts = sent.data.map(post => {
+          post.type = 'sent';
+          return post;
+        });
+        const posts = [...receivedPosts, ...sentPosts].map(post => {
+          post.createdAt = new Date(post.createdAt);
+          post.expiry = new Date(post.expiry);
+          return post;
+        });
+
+        dispatch({
+          type: 'LOAD_POSTS',
+          payload: {
+            status: 'LOADED',
+            posts
+          }
+        });
       });
-    });
-    PostService.getSent().then(({ data: posts }) => {
-      dispatch({
-        type: 'LOAD_POSTS',
-        payload: { type: 'sent', posts }
-      });
-    });
+    }
     // eslint-disable-next-line
   }, []); // TODO: Reference github issue
 

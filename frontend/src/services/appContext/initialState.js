@@ -13,6 +13,7 @@ const initialState = {
     type: 'video'
   },
   feed: {
+    status: 'NOT_LOADED',
     posts: []
   }
 };

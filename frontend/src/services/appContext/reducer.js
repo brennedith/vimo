@@ -21,21 +21,16 @@ const reducer = (state, action) => {
         }
       };
     case 'LOAD_POSTS':
-      const newPosts = action.payload.posts.map(post => {
-        post.type = action.payload.type;
-        post.createdAt = new Date(post.createdAt);
-        post.expiry = new Date(post.expiry);
-
-        return post;
-      });
-      const posts = [...state.feed.posts, ...newPosts].sort(
+      const { status, posts } = action.payload;
+      const sortedPosts = [...state.feed.posts, ...posts].sort(
         (a, b) => a.createdAt > b.createdAt
       );
 
       return {
         ...state,
         feed: {
-          posts
+          status,
+          posts: sortedPosts
         }
       };
     default:
