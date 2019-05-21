@@ -3,6 +3,7 @@ import ReactMapGL, { NavigationControl, Marker } from 'react-map-gl';
 
 import appContext from '../../../../services/context';
 
+import 'mapbox-gl/dist/mapbox-gl.css';
 import './index.css';
 
 const MapView = () => {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Switch, Route } from 'react-router';
 
 import NavBar from './components/NavBar';
@@ -10,12 +10,30 @@ import MapView from './components/MapView';
 import Friends from './components/Friends';
 import Profile from './components/Profile';
 
+import appContext from '../../services/context';
+import PostService from '../../services/PostService';
 import { useLocation } from '../../services/customHooks';
 
-import 'mapbox-gl/dist/mapbox-gl.css';
-
 const MobileApp = () => {
+  const { dispatch } = useContext(appContext);
+
   useLocation();
+
+  useEffect(() => {
+    PostService.getReceived().then(({ data: posts }) => {
+      dispatch({
+        type: 'LOAD_POSTS',
+        payload: { type: 'received', posts }
+      });
+    });
+    PostService.getSent().then(({ data: posts }) => {
+      dispatch({
+        type: 'LOAD_POSTS',
+        payload: { type: 'sent', posts }
+      });
+    });
+    // eslint-disable-next-line
+  }, []); // TODO: Reference github issue
 
   return (
     <>

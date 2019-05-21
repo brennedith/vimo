@@ -18,10 +18,22 @@ class Post {
     return service.post(path, body);
   }
 
-  get = () => {
+  getSent = () => {
     const { service } = this;
-    const path = '/';
+    const path = '/sent';
     return service.get(path);
+  };
+
+  getReceived = () => {
+    const { service } = this;
+    const path = '/received';
+    return service.get(path);
+  };
+
+  getNearby = body => {
+    const { service } = this;
+    const path = '/nearby';
+    return service.get(path, body);
   };
 
   delete = id => {

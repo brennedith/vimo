@@ -1,0 +1,28 @@
+.Post {
+  display: flex;
+  padding: 10px;
+  border-bottom: 1px solid lightgray;
+  align-items: center;
+}
+
+a:last-child .Post {
+  border-bottom: 0;
+}
+
+.Post .post-content {
+  width: 100%;
+}
+
+.Post .post-content .in {
+  color: #157696;
+  transform: rotateY(-180deg);
+}
+
+.Post .post-content .out {
+  color: #13b048;
+}
+
+.Post .icon {
+  width: 30px;
+  color: gray;
+}

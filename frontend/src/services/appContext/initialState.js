@@ -11,6 +11,9 @@ const initialState = {
   },
   post: {
     type: 'video'
+  },
+  feed: {
+    posts: []
   }
 };
 

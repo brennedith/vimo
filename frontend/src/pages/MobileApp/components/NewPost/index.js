@@ -10,7 +10,7 @@ import PostService from '../../../../services/PostService';
 const NewPostForm = () => {
   const { state } = useContext(appContext);
   const { type } = state.post;
-  const { latitude, longitude, accuracy } = state.coords; //TODO: Verify accuracy use
+  const { latitude, longitude, accuracy } = state.coords;
   const [message, setMessage] = useState(null);
 
   const handleSend = content => {

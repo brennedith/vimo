@@ -69,7 +69,7 @@ router.get('/received', isAuth, (req, res, next) => {
     .then(posts => {
       // Filters post information
       filteredPosts = posts.map(post => {
-        const { _id, from, status, loc, expiry, content } = post;
+        const { _id, from, status, loc, expiry, content, createdAt } = post;
 
         return {
           _id,
@@ -81,7 +81,8 @@ router.get('/received', isAuth, (req, res, next) => {
           expiry,
           content: {
             type: content.type
-          }
+          },
+          createdAt
         };
       });
 
