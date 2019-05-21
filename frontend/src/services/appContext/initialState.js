@@ -15,6 +15,10 @@ const initialState = {
   feed: {
     status: 'NOT_LOADED',
     posts: []
+  },
+  profile: {
+    status: 'NOT_LOADED',
+    user: {}
   }
 };
 

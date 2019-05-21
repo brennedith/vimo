@@ -21,16 +21,24 @@ const reducer = (state, action) => {
         }
       };
     case 'LOAD_POSTS':
-      const { status, posts } = action.payload;
-      const sortedPosts = [...state.feed.posts, ...posts].sort(
-        (a, b) => a.createdAt > b.createdAt
-      );
+      const posts = action.payload;
+      const sortedPosts = [...state.feed.posts, ...posts].sort((a, b) => {
+        return a.createdAt > b.createdAt;
+      });
 
       return {
         ...state,
         feed: {
-          status,
+          status: 'LOADED',
           posts: sortedPosts
+        }
+      };
+    case 'LOAD_USER':
+      return {
+        ...state,
+        profile: {
+          status: 'LOADED',
+          user: action.payload
         }
       };
     default:

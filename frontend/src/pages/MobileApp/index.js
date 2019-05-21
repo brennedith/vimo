@@ -12,17 +12,29 @@ import Profile from './components/Profile';
 
 import appContext from '../../services/context';
 import PostService from '../../services/PostService';
+import ProfileService from '../../services/ProfileService';
 import { useLocation } from '../../services/customHooks';
 
 const MobileApp = () => {
   const { state, dispatch } = useContext(appContext);
-  const { status } = state.feed;
+  const feedStatus = state.feed.status;
+  const profileStatus = state.profile.status;
 
   useLocation();
 
   useEffect(() => {
+    // Loads user profile
+    if (profileStatus === 'NOT_LOADED') {
+      ProfileService.get().then(({ data: user }) => {
+        dispatch({
+          type: 'LOAD_USER',
+          payload: user
+        });
+      });
+    }
+
     // Loads all sent and received posts
-    if (status === 'NOT_LOADED') {
+    if (feedStatus === 'NOT_LOADED') {
       const receivedPromise = PostService.getReceived();
       const sentPromise = PostService.getSent();
 
@@ -43,10 +55,7 @@ const MobileApp = () => {
 
         dispatch({
           type: 'LOAD_POSTS',
-          payload: {
-            status: 'LOADED',
-            posts
-          }
+          payload: posts
         });
       });
     }
