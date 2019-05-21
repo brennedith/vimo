@@ -37,7 +37,7 @@ const MapView = () => {
   ));
 
   return (
-    <div className="MapView" style={{ width: '100%', height: '100%' }}>
+    <div className="MapView">
       <ReactMapGL
         mapboxApiAccessToken={mapBoxToken}
         reuseMaps
