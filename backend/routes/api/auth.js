@@ -37,12 +37,6 @@ router.post('/login', (req, res, next) => {
   })(req, res, next);
 });
 
-router.get('/', isAuth, (req, res, next) => {
-  const { user } = req;
-
-  res.status(200).json(user);
-});
-
 router.get('/logout', isAuth, (req, res, next) => {
   req.logOut();
   res.status(200).json({ message: 'Ok' });

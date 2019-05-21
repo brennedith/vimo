@@ -8,6 +8,12 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
+const avatarStorage = clodinaryStorage({
+  cloudinary: cloudinary,
+  folder: 'vimo/avatars'
+});
+const avatarUpload = multer({ storage: avatarStorage });
+
 const imageStorage = clodinaryStorage({
   cloudinary: cloudinary,
   folder: 'vimo/images'
@@ -24,5 +30,6 @@ const videoStorage = clodinaryStorage({
 });
 const videoUpload = multer({ storage: videoStorage });
 
+exports.avatarUpload = avatarUpload;
 exports.imageUpload = imageUpload;
 exports.videoUpload = videoUpload;
