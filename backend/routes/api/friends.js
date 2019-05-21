@@ -36,10 +36,20 @@ router.delete('/:id', isAuth, (req, res, next) => {
 });
 
 router.get('/search', isAuth, (req, res, next) => {
+  const { _id } = req.user;
   const { q } = req.query;
   const regex = new RegExp(q, 'i');
 
-  User.find({ $or: [{ name: regex }, { username: regex }] })
+  if (q === '') {
+    return res.status(200).json([]);
+  }
+
+  User.find({
+    $or: [
+      { _id: { $ne: _id }, name: regex },
+      { _id: { $ne: _id }, username: regex }
+    ]
+  })
     .then(users => res.status(200).json(users))
     .catch(err => res.status(500).json(err));
 });
