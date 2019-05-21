@@ -1,5 +1,9 @@
 import React, { useContext } from 'react';
-import ReactMapGL, { NavigationControl, Marker } from 'react-map-gl';
+import ReactMapGL, { Marker } from 'react-map-gl';
+
+import MapControls from './MapControls';
+import UserMarker from './UserMarker';
+import PostMarker from './PostMarker';
 
 import appContext from '../../../../services/context';
 
@@ -9,8 +13,9 @@ import './index.css';
 const MapView = () => {
   const mapBoxToken = process.env.REACT_APP_MAPBOX_TOKEN;
   const { state, dispatch } = useContext(appContext);
-  const { latitude, longitude } = state.coords;
   const { zoom } = state.map;
+  const { latitude, longitude } = state.coords;
+  const { posts } = state.feed;
 
   const viewport = {
     width: '100%',
@@ -27,7 +32,9 @@ const MapView = () => {
     });
   };
 
-  if (!latitude || !longitude) return null;
+  const postsMarkers = posts.map(post => (
+    <PostMarker key={post._id} {...post} />
+  ));
 
   return (
     <div className="MapView" style={{ width: '100%', height: '100%' }}>
@@ -38,20 +45,9 @@ const MapView = () => {
         mapStyle={'mapbox://styles/mapbox/streets-v11'}
         onViewportChange={({ zoom }) => updateZoom(zoom)}
       >
-        <Marker
-          latitude={latitude}
-          longitude={longitude}
-          offsetTop={-8}
-          offsetLeft={-8}
-        >
-          {/*TODO: Add accuracy representation */}
-          <div className="UserMarker" />
-        </Marker>
-        <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
-          <NavigationControl
-            onViewportChange={({ zoom }) => updateZoom(zoom)}
-          />
-        </div>
+        {postsMarkers}
+        <UserMarker latitude={latitude} longitude={longitude} />
+        <MapControls updateZoom={updateZoom} />
       </ReactMapGL>
     </div>
   );
