@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import ReactMapGL, { Marker } from 'react-map-gl';
+import ReactMapGL from 'react-map-gl';
 
 import MapControls from './MapControls';
 import UserMarker from './UserMarker';
