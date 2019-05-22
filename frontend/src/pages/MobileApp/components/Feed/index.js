@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import List from './List';
 
 const Feed = () => {
-  const [postId, setPostId] = useState(null);
-  return <>{postId ? <List /> : <List />}</>;
+  return (
+    <>
+      <List />
+    </>
+  );
 };
 
 export default Feed;
