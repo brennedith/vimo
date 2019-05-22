@@ -18,16 +18,15 @@ router.get('/', isAuth, (req, res, next) => {
 router.patch('/', avatarUpload.single('avatar'), isAuth, (req, res, next) => {
   const { _id } = req.user;
   const { name } = req.body;
-  const image_url = req.file ? req.file.secure_url : '';
+  const image_url = req.file ? req.file.secure_url : undefined;
 
-  User.findByIdAndUpdate(
-    _id,
-    {
-      name,
-      image_url
-    },
-    { new: true }
-  )
+  const updateInformation = {
+    name
+  };
+
+  if (image_url) updateInformation.image_url = image_url;
+
+  User.findByIdAndUpdate(_id, updateInformation, { new: true })
     .populate('friends')
     .then(user => res.status(200).json(user))
     .catch(err => res.status(500).json({ err }));

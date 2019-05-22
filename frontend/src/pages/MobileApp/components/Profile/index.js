@@ -1,5 +1,6 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 
+import ProfileService from '../../../../services/ProfileService';
 import appContext from '../../../../services/context';
 
 import AvatarPicture from './AvatarPicture';
@@ -11,15 +12,34 @@ const Profile = () => {
   const { user } = state.profile;
 
   const [name, setName] = useState('');
+  const avatarRef = useRef();
+
   const [editForm, setEditForm] = useState(false);
 
   useEffect(() => {
     if (editForm && user.name) {
       setName(user.name);
     }
-  }, [editForm]);
+  }, [editForm, user]);
 
   const switchEdit = () => setEditForm(!editForm);
+
+  const updateProfile = () => {
+    const body = new FormData();
+    const avatarFile = avatarRef.current.files[0];
+
+    if (name) body.append('name', name);
+    if (avatarFile) body.append('avatar', avatarFile);
+
+    ProfileService.update(body).then(({ data: user }) => {
+      dispatch({
+        type: 'LOAD_USER',
+        payload: user
+      });
+
+      switchEdit();
+    });
+  };
 
   return (
     <article className="Profile">
@@ -48,7 +68,7 @@ const Profile = () => {
           </label>
           <div className="file">
             <label className="file-label">
-              <input className="file-input" type="file" name="resume" />
+              <input className="file-input" type="file" ref={avatarRef} />
               <span className="file-cta">
                 <span className="file-icon">
                   <i className="fas fa-upload" />
@@ -57,7 +77,11 @@ const Profile = () => {
               </span>
             </label>
           </div>
-          <button className="button is-link" type="button">
+          <button
+            className="button is-link"
+            type="button"
+            onClick={updateProfile}
+          >
             Update Profile
           </button>
         </>
