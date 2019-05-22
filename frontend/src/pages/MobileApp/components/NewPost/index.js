@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 
 import TypesControl from './TypesControl';
 import TextArea from './TextArea';
@@ -11,7 +11,6 @@ const NewPostForm = () => {
   const { state } = useContext(appContext);
   const { type } = state.post;
   const { latitude, longitude, accuracy } = state.coords;
-  const [message, setMessage] = useState(null);
 
   const handleSend = content => {
     let body;
@@ -41,7 +40,6 @@ const NewPostForm = () => {
 
   return (
     <>
-      {message && <p className="notification is-danger">{message}</p>}
       {type === 'video' && <Video type="video" handleSend={handleSend} />}
       {type === 'text' && <TextArea handleSend={handleSend} />}
       {type === 'photo' && <Video type="photo" handleSend={handleSend} />}
