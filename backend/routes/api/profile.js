@@ -28,6 +28,7 @@ router.patch('/', avatarUpload.single('avatar'), isAuth, (req, res, next) => {
     },
     { new: true }
   )
+    .populate('friends')
     .then(user => res.status(200).json(user))
     .catch(err => res.status(500).json({ err }));
 });
