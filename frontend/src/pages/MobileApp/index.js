@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { Switch, Route } from 'react-router';
 
 import NavBar from './components/NavBar';
-import Content from './components/Content';
+import './components/Content.css';
 
 import Feed from './components/Feed';
 import NewPost from './components/NewPost';
@@ -64,16 +64,14 @@ const MobileApp = () => {
 
   return (
     <>
-      <Content>
-        <Switch>
-          <Route path="/app/feed" component={Feed} />
-          <Route path="/app/new" component={NewPost} />
-          <Route path="/app/map" component={MapView} />
-          <Route path="/app/friends" component={Friends} />
-          <Route path="/app/profile" component={Profile} />
-          <Route component={Feed} />
-        </Switch>
-      </Content>
+      <Switch>
+        <Route path="/app/feed" component={Feed} />
+        <Route path="/app/new" component={NewPost} />
+        <Route path="/app/map" component={MapView} />
+        <Route path="/app/friends" component={Friends} />
+        <Route path="/app/profile" component={Profile} />
+        <Route component={Feed} />
+      </Switch>
       <NavBar />
     </>
   );

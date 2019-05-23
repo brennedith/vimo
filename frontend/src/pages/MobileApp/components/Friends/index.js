@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 
+import Content from '../Content';
 import List from './List';
 
 import appContext from '../../../../services/context';
@@ -25,7 +26,7 @@ const Friends = () => {
   }, [query, friends]);
 
   return (
-    <>
+    <Content>
       <div className="SearchBox">
         <label className="label">
           Search
@@ -40,7 +41,7 @@ const Friends = () => {
       <ul>
         <List people={people} />
       </ul>
-    </>
+    </Content>
   );
 };
 

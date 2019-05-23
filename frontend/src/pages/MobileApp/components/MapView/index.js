@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import ReactMapGL from 'react-map-gl';
 
+import Content from '../Content';
 import MapControls from './MapControls';
 import UserMarker from './UserMarker';
 import PostMarker from './PostMarker';
@@ -37,19 +38,21 @@ const MapView = () => {
   ));
 
   return (
-    <div className="MapView">
-      <ReactMapGL
-        mapboxApiAccessToken={mapBoxToken}
-        reuseMaps
-        {...viewport}
-        mapStyle={'mapbox://styles/mapbox/streets-v11'}
-        onViewportChange={({ zoom }) => updateZoom(zoom)}
-      >
-        {postsMarkers}
-        <UserMarker latitude={latitude} longitude={longitude} />
-        <MapControls updateZoom={updateZoom} />
-      </ReactMapGL>
-    </div>
+    <Content>
+      <div className="MapView">
+        <ReactMapGL
+          mapboxApiAccessToken={mapBoxToken}
+          reuseMaps
+          {...viewport}
+          mapStyle={'mapbox://styles/mapbox/streets-v11'}
+          onViewportChange={({ zoom }) => updateZoom(zoom)}
+        >
+          {postsMarkers}
+          <UserMarker latitude={latitude} longitude={longitude} />
+          <MapControls updateZoom={updateZoom} />
+        </ReactMapGL>
+      </div>
+    </Content>
   );
 };
 

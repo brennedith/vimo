@@ -84,14 +84,14 @@ const NewPostForm = () => {
   const PostingStatusActive = access ? true : false;
 
   return (
-    <>
+    <section className="Content no-scroll">
       {type === 'video' && <Video type="video" handleSend={saveContent} />}
       {type === 'text' && <TextArea handleSend={saveContent} />}
       {type === 'photo' && <Video type="photo" handleSend={saveContent} />}
       <TypesControl />
       <SendTo active={SendToActive} handleSend={saveAccess} />
       <PostingStatus active={PostingStatusActive} status={postSent} />
-    </>
+    </section>
   );
 };
 

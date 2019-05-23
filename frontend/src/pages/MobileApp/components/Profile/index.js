@@ -1,9 +1,10 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
 
+import Content from '../Content';
+import AvatarPicture from './AvatarPicture';
+
 import ProfileService from '../../../../services/ProfileService';
 import appContext from '../../../../services/context';
-
-import AvatarPicture from './AvatarPicture';
 
 import './index.css';
 
@@ -42,53 +43,55 @@ const Profile = () => {
   };
 
   return (
-    <article className="Profile">
-      <div className="options">
+    <Content>
+      <article className="Profile">
+        <div className="options">
+          {editForm ? (
+            <button type="button" onClick={switchEdit}>
+              <span className={`fa fa-times fa-lg`} />
+            </button>
+          ) : (
+            <button type="button" onClick={switchEdit}>
+              <span className={`fa fa-user-edit fa-lg`} />
+            </button>
+          )}
+        </div>
+        <AvatarPicture url={user.image_url} />
         {editForm ? (
-          <button type="button" onClick={switchEdit}>
-            <span className={`fa fa-times fa-lg`} />
-          </button>
-        ) : (
-          <button type="button" onClick={switchEdit}>
-            <span className={`fa fa-user-edit fa-lg`} />
-          </button>
-        )}
-      </div>
-      <AvatarPicture url={user.image_url} />
-      {editForm ? (
-        <>
-          <label className="label">
-            Name
-            <input
-              className="input"
-              type="text"
-              value={name}
-              onChange={({ target }) => setName(target.value)}
-            />
-          </label>
-          <div className="file">
-            <label className="file-label">
-              <input className="file-input" type="file" ref={avatarRef} />
-              <span className="file-cta">
-                <span className="file-icon">
-                  <i className="fas fa-upload" />
-                </span>
-                <span className="file-label">Upload picture</span>
-              </span>
+          <>
+            <label className="label">
+              Name
+              <input
+                className="input"
+                type="text"
+                value={name}
+                onChange={({ target }) => setName(target.value)}
+              />
             </label>
-          </div>
-          <button
-            className="button is-link"
-            type="button"
-            onClick={updateProfile}
-          >
-            Update Profile
-          </button>
-        </>
-      ) : (
-        <h1 className="title">{user.name}</h1>
-      )}
-    </article>
+            <div className="file">
+              <label className="file-label">
+                <input className="file-input" type="file" ref={avatarRef} />
+                <span className="file-cta">
+                  <span className="file-icon">
+                    <i className="fas fa-upload" />
+                  </span>
+                  <span className="file-label">Upload picture</span>
+                </span>
+              </label>
+            </div>
+            <button
+              className="button is-link"
+              type="button"
+              onClick={updateProfile}
+            >
+              Update Profile
+            </button>
+          </>
+        ) : (
+          <h1 className="title">{user.name}</h1>
+        )}
+      </article>
+    </Content>
   );
 };
 
