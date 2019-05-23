@@ -61,7 +61,16 @@ function newPost(req, res, next) {
   });
 
   Post.create(posts)
-    .then(post => res.status(200).json(post))
+
+    .then(posts => {
+      const populatedPostsPromises = posts.map(post => {
+        return post.populate(['to', 'from']).execPopulate();
+      });
+
+      Promise.all(populatedPostsPromises).then(posts => {
+        res.status(200).json(posts);
+      });
+    })
     .catch(err => res.status(500).json(err));
 }
 
