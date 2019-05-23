@@ -28,7 +28,7 @@ const Details = post => {
   const [longitude, latitude] = post.loc.coordinates;
   const [viewport, setViewport] = useState({
     width: '100%',
-    height: '380px',
+    height: '50vh',
     latitude,
     longitude,
     zoom: 11
