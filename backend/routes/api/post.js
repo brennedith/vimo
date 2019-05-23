@@ -1,5 +1,8 @@
 const express = require('express');
+const mongoose = require('mongoose');
+
 const router = express.Router();
+const { ObjectId } = mongoose.Types.ObjectId;
 
 const { isAuth } = require('../../configs/middlewares');
 const { imageUpload, videoUpload } = require('../../configs/storage');
@@ -61,7 +64,6 @@ function newPost(req, res, next) {
   });
 
   Post.create(posts)
-
     .then(posts => {
       const populatedPostsPromises = posts.map(post => {
         return post.populate(['to', 'from']).execPopulate();
@@ -112,6 +114,36 @@ router.get('/received', isAuth, (req, res, next) => {
 
       res.status(200).json(filteredPosts);
     })
+    .catch(err => res.status(500).json(err));
+});
+
+/* READ: An specific post */
+router.post('/:id', isAuth, (req, res, next) => {
+  const { id } = req.params;
+  const { longitude, latitude } = req.body;
+  const { _id } = req.user;
+
+  Post.aggregate([
+    {
+      // Finds nearby posts
+      $geoNear: {
+        near: {
+          type: 'Point',
+          coordinates: [longitude, latitude]
+        },
+        distanceField: 'distance',
+        spherical: true,
+        maxDistance: 1000,
+        query: {
+          $or: [
+            { $and: [{ _id: ObjectId(id) }, { to: _id }] },
+            { $and: [{ _id: ObjectId(id) }, { to: { $exists: false } }] }
+          ]
+        }
+      }
+    }
+  ]) //TODO: Return only active posts
+    .then(posts => res.status(200).json(posts[0]))
     .catch(err => res.status(500).json(err));
 });
 

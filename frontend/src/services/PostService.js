@@ -30,6 +30,12 @@ class Post {
     return service.get(path);
   };
 
+  open = (id, body) => {
+    const { service } = this;
+    const path = `/${id}`;
+    return service.post(path, body);
+  };
+
   getNearby = body => {
     const { service } = this;
     const path = '/nearby';

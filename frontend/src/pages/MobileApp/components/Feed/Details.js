@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import ReactMapGL from 'react-map-gl';
 import moment from 'moment';
 
+import PostContent from './PostContent';
 import PostMarker from '../MapView/PostMarker';
 import UserMarker from '../MapView/UserMarker';
 
@@ -12,11 +13,11 @@ import './Details.css';
 
 const Details = post => {
   const mapBoxToken = process.env.REACT_APP_MAPBOX_TOKEN;
-  const { state, dispatch } = useContext(appContext);
-  const { type, content, distance } = post;
 
+  const { state, dispatch } = useContext(appContext);
   const userLocation = state.coords;
 
+  const { type, content, distance } = post;
   const sentByUser = type === 'sent';
   const senderPost = sentByUser ? post.to : post.from;
   const sender = senderPost
@@ -34,6 +35,8 @@ const Details = post => {
     zoom: 11
   });
 
+  const [postContent, setPostContent] = useState(null);
+
   let postIcon;
   switch (content.type) {
     case 'video':
@@ -49,7 +52,13 @@ const Details = post => {
 
   const onViewportChange = viewport => setViewport(viewport);
 
-  const openPost = id => {};
+  const openPost = id => {
+    const body = userLocation;
+
+    PostService.open(id, body).then(({ data: post }) =>
+      setPostContent(post.content)
+    );
+  };
 
   const deletePost = id => {
     PostService.delete(id).then(({ data: post }) => {
@@ -66,7 +75,9 @@ const Details = post => {
     post.selectPost(null);
   };
 
-  return (
+  return postContent ? (
+    <PostContent content={postContent} closeContent={goBack} />
+  ) : (
     <article className="PostDetails">
       <header>
         <div>
