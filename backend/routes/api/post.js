@@ -117,36 +117,6 @@ router.get('/received', isAuth, (req, res, next) => {
     .catch(err => res.status(500).json(err));
 });
 
-/* READ: An specific post */
-router.post('/:id', isAuth, (req, res, next) => {
-  const { id } = req.params;
-  const { longitude, latitude } = req.body;
-  const { _id } = req.user;
-
-  Post.aggregate([
-    {
-      // Finds nearby posts
-      $geoNear: {
-        near: {
-          type: 'Point',
-          coordinates: [longitude, latitude]
-        },
-        distanceField: 'distance',
-        spherical: true,
-        maxDistance: 1000,
-        query: {
-          $or: [
-            { $and: [{ _id: ObjectId(id) }, { to: _id }] },
-            { $and: [{ _id: ObjectId(id) }, { to: { $exists: false } }] }
-          ]
-        }
-      }
-    }
-  ]) //TODO: Return only active posts
-    .then(posts => res.status(200).json(posts[0]))
-    .catch(err => res.status(500).json(err));
-});
-
 /* READ: All public posts  */
 router.post('/nearby', isAuth, (req, res, next) => {
   const { longitude, latitude } = req.body;
@@ -188,6 +158,35 @@ router.post('/nearby', isAuth, (req, res, next) => {
 
       res.status(200).json(responsePosts);
     })
+    .catch(err => res.status(500).json(err));
+});
+/* READ: An specific post */
+router.post('/:id', isAuth, (req, res, next) => {
+  const { id } = req.params;
+  const { longitude, latitude } = req.body;
+  const { _id } = req.user;
+
+  Post.aggregate([
+    {
+      // Finds nearby posts
+      $geoNear: {
+        near: {
+          type: 'Point',
+          coordinates: [longitude, latitude]
+        },
+        distanceField: 'distance',
+        spherical: true,
+        maxDistance: 1000,
+        query: {
+          $or: [
+            { $and: [{ _id: ObjectId(id) }, { to: _id }] },
+            { $and: [{ _id: ObjectId(id) }, { to: { $exists: false } }] }
+          ]
+        }
+      }
+    }
+  ]) //TODO: Return only active posts
+    .then(posts => res.status(200).json(posts[0]))
     .catch(err => res.status(500).json(err));
 });
 
