@@ -12,7 +12,7 @@ import PostService from '../../../../services/PostService';
 import './index.css';
 
 const NewPostForm = () => {
-  const { state } = useContext(appContext);
+  const { state, dispatch } = useContext(appContext);
   const { type } = state.post;
   const { latitude, longitude, accuracy } = state.coords;
   // Post information
@@ -35,8 +35,18 @@ const NewPostForm = () => {
       }
 
       PostService.create(type, body)
-        .then(({ data: post }) => {
+        .then(({ data: posts }) => {
+          const sentPosts = posts.map(post => {
+            post.type = 'sent';
+            return post;
+          });
+
           setPostSent(true);
+
+          dispatch({
+            type: 'LOAD_POSTS',
+            payload: sentPosts
+          });
 
           setTimeout(() => {
             setContent(null);
