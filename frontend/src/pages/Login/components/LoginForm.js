@@ -15,7 +15,7 @@ const LoginForm = ({ history }) => {
 
     if (!username || !password) {
       // Only visible for old browsers
-      setMessage(`Uh? All fields must be filled 😮️.`);
+      setMessage(`Uh? All fields must be filled. 😮`);
       setIsFormDisabled(false);
     } else {
       AuthService.login({
@@ -24,10 +24,10 @@ const LoginForm = ({ history }) => {
       })
         .then(({ data: user }) => {
           localStorage.setItem('userId', user._id);
-          history.push('/app/feed');
+          history.push('/app');
         })
-        .catch(({ response: { data: err } }) => {
-          setMessage(err.message);
+        .catch(({ response }) => {
+          setMessage(`${response.data.message} 😮`);
           setIsFormDisabled(false);
         });
     }
@@ -35,20 +35,23 @@ const LoginForm = ({ history }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      {message && <p>{message}</p>}
-      <label>
-        Username:{' '}
+      {message && <p className="notification is-light">{message}</p>}
+      <label className="label">
+        Username:
         <input
+          className="input"
           type="text"
           value={username}
           disabled={isFormDisabled}
           required
+          minLength={6}
           onChange={({ target }) => setUsername(target.value)}
         />
       </label>
-      <label>
-        Password:{' '}
+      <label className="label">
+        Password:
         <input
+          className="input"
           type="password"
           value={password}
           disabled={isFormDisabled}
@@ -56,7 +59,11 @@ const LoginForm = ({ history }) => {
           onChange={({ target }) => setPassword(target.value)}
         />
       </label>
-      <button type="submit" disabled={isFormDisabled}>
+      <button
+        className="button is-link"
+        type="submit"
+        disabled={isFormDisabled}
+      >
         Log in
       </button>
     </form>

@@ -15,7 +15,7 @@ import PostService from '../../services/PostService';
 import ProfileService from '../../services/ProfileService';
 import { useLocation } from '../../services/customHooks';
 
-const MobileApp = () => {
+const MobileApp = ({ history }) => {
   const { state, dispatch } = useContext(appContext);
   const feedStatus = state.feed.status;
   const profileStatus = state.profile.status;
@@ -23,6 +23,9 @@ const MobileApp = () => {
   useLocation();
 
   useEffect(() => {
+    const userId = localStorage.getItem('userId');
+    if (!userId) history.push('/login');
+
     // Loads user profile
     if (profileStatus === 'NOT_LOADED') {
       ProfileService.get().then(({ data: user }) => {

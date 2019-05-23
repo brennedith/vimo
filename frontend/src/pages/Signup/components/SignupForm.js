@@ -16,10 +16,10 @@ const SubmitForm = ({ history }) => {
 
     if (!username || !password) {
       // Only visible for old browsers
-      setMessage(`Uh? All fields must be filled 😮️.`);
+      setMessage(`Uh? All fields must be filled. 😮`);
       setIsFormDisabled(false);
     } else if (password !== passwordVerification) {
-      setMessage(`Password and verification don't match 🤔️.`);
+      setMessage(`Passwords don't match. 🤔`);
       setIsFormDisabled(false);
     } else {
       AuthService.signup({
@@ -28,10 +28,10 @@ const SubmitForm = ({ history }) => {
       })
         .then(({ data: user }) => {
           localStorage.setItem('userId', user._id);
-          history.push('/app/feed');
+          history.push('/app');
         })
-        .catch(({ response: { data: err } }) => {
-          setMessage(err.message);
+        .catch(({ response }) => {
+          setMessage(`${response.data.message} 😮`);
           setIsFormDisabled(false);
         });
     }
@@ -39,20 +39,23 @@ const SubmitForm = ({ history }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      {message && <p>{message}</p>}
-      <label>
-        Username:{' '}
+      {message && <p className="notification is-light">{message}</p>}
+      <label className="label">
+        Username:
         <input
+          className="input"
           type="text"
           value={username}
           disabled={isFormDisabled}
           required
+          minLength={6}
           onChange={({ target }) => setUsername(target.value)}
         />
       </label>
-      <label>
-        Password:{' '}
+      <label className="label">
+        Password:
         <input
+          className="input"
           type="password"
           value={password}
           disabled={isFormDisabled}
@@ -60,9 +63,10 @@ const SubmitForm = ({ history }) => {
           onChange={({ target }) => setPassword(target.value)}
         />
       </label>
-      <label>
-        Retype Password:{' '}
+      <label className="label">
+        Retype Password:
         <input
+          className="input"
           type="password"
           value={passwordVerification}
           disabled={isFormDisabled}
@@ -70,7 +74,11 @@ const SubmitForm = ({ history }) => {
           onChange={({ target }) => setPasswordVerification(target.value)}
         />
       </label>
-      <button type="submit" disabled={isFormDisabled}>
+      <button
+        className="button is-link"
+        type="submit"
+        disabled={isFormDisabled}
+      >
         Sign up
       </button>
     </form>

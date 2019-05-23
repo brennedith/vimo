@@ -1,0 +1,28 @@
+.auth-form {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.auth-form .is-1 {
+  font-size: 4em;
+}
+
+.auth-form .is-tomato {
+  color: tomato;
+}
+
+.auth-form header {
+  text-align: center;
+  margin: 20px;
+}
+
+.auth-form form {
+  padding: 15px 25px;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
