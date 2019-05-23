@@ -39,7 +39,8 @@ class Post {
   getNearby = body => {
     const { service } = this;
     const path = '/nearby';
-    return service.get(path, body);
+
+    return service.post(path, body);
   };
 
   delete = id => {
