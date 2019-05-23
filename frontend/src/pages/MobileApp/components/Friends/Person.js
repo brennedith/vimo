@@ -54,7 +54,7 @@ const Person = person => {
         ) : (
           <button
             type="button"
-            className="button is-success"
+            className="button is-link"
             onClick={() => addFriend(_id)}
           >
             Follow
