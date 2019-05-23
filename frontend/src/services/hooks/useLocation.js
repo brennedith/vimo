@@ -21,12 +21,14 @@ const useLocation = () => {
             payload: { latitude, longitude, accuracy, speed }
           });
 
-          PostService.getNearby(body).then(({ data: posts }) => {
-            dispatch({
-              type: 'LOAD_POSTS',
-              payload: posts
-            });
-          });
+          PostService.getNearby(body)
+            .then(({ data: posts }) => {
+              dispatch({
+                type: 'LOAD_POSTS',
+                payload: posts
+              });
+            })
+            .catch(({ response }) => {});
         }
       },
       err => console.log(err), //TODO: handle error

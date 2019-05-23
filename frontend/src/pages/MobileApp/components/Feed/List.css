@@ -1,0 +1,14 @@
+.List.empty {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.List.empty h2 {
+  padding: 10px;
+  text-align: center;
+}
+
+.List.empty span {
+  color: tomato;
+}
