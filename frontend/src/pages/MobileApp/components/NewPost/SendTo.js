@@ -4,7 +4,7 @@ import appContext from '../../../../services/context';
 
 import './SendTo.css';
 
-const initialState = { public: false };
+const initialState = {};
 
 const SendTo = ({ active, handleSend }) => {
   const { state } = useContext(appContext);
@@ -24,11 +24,16 @@ const SendTo = ({ active, handleSend }) => {
   const sendAccess = () => {
     const access = Object.keys(localState);
 
-    handleSend(access);
-    setLocalState(initialState);
+    if (access.length > 0) {
+      handleSend(access);
+      setLocalState(initialState);
+    } else {
+      handleSend(null);
+    }
   };
 
   const activeClass = active ? 'active' : '';
+  const selected = Object.keys(localState).length > 0;
 
   if (!friends) return null;
   return (
@@ -36,7 +41,7 @@ const SendTo = ({ active, handleSend }) => {
       <div className="options">
         <h1 className="subtitle">Who can access this VIMO?</h1>
         <button className="button is-tomato" type="button" onClick={sendAccess}>
-          Save
+          {selected ? 'Save' : 'Cancel'}
         </button>
       </div>
       <ul>

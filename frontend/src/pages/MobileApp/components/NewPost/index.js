@@ -4,6 +4,7 @@ import TypesControl from './TypesControl';
 import TextArea from './TextArea';
 import Video from './Video';
 import SendTo from './SendTo';
+import PostingStatus from './PostingStatus';
 
 import appContext from '../../../../services/context';
 import PostService from '../../../../services/PostService';
@@ -17,6 +18,7 @@ const NewPostForm = () => {
   // Post information
   const [content, setContent] = useState(null);
   const [access, setAccess] = useState(null);
+  const [postSent, setPostSent] = useState(false);
 
   useEffect(() => {
     if (content && access) {
@@ -32,15 +34,19 @@ const NewPostForm = () => {
         body.append('to', access);
       }
 
-      console.log(body);
+      PostService.create(type, body)
+        .then(({ data: post }) => {
+          setPostSent(true);
 
-      // PostService.create(type, body)
-      //   .then(({ data: post }) => console.log(post))
-      //   .catch(({ response }) => console.log(response));
-      setContent(null);
-      setAccess(null);
+          setTimeout(() => {
+            setContent(null);
+            setAccess(null);
+            setPostSent(false);
+          }, 800);
+        })
+        .catch(err => console.log(err.response));
     }
-  }, [content, access]);
+  }, [type, content, access]);
 
   const saveContent = content => {
     let body;
@@ -67,11 +73,15 @@ const NewPostForm = () => {
   };
 
   const saveAccess = access => {
-    setAccess(access);
+    if (!access) {
+      setContent(null);
+    } else {
+      setAccess(access);
+    }
   };
 
   const SendToActive = content ? true : false;
-  const StatusActive = access ? true : false;
+  const PostingStatusActive = access ? true : false;
 
   return (
     <>
@@ -80,6 +90,7 @@ const NewPostForm = () => {
       {type === 'photo' && <Video type="photo" handleSend={saveContent} />}
       <TypesControl />
       <SendTo active={SendToActive} handleSend={saveAccess} />
+      <PostingStatus active={PostingStatusActive} status={postSent} />
     </>
   );
 };

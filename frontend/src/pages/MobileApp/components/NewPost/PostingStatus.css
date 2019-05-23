@@ -1,0 +1,53 @@
+.PostingStatus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  z-index: 1;
+  transform: translateY(100%);
+  transition: all 0.2s ease-in-out;
+}
+
+.PostingStatus.active {
+  transform: translateY(0);
+}
+
+.PostingStatus .sending {
+  animation: 1s infinite sending;
+}
+
+.PostingStatus .sent {
+  color: tomato;
+  text-align: center;
+  font-size: 5em;
+  animation: 0.5s sent;
+}
+
+@keyframes sending {
+  0% {
+    transform: skew(3deg, 3deg);
+  }
+  50% {
+    transform: skew(-3deg, -3deg);
+  }
+  100% {
+    transform: skew(3deg, 3deg);
+  }
+}
+
+@keyframes sent {
+  0% {
+    transform: translateY(-150px);
+  }
+  80% {
+    transform: translateY(30px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
