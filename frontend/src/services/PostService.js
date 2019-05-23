@@ -39,7 +39,7 @@ class Post {
   delete = id => {
     const { service } = this;
     const path = `/${id}`;
-    return service.get(path);
+    return service.delete(path);
   };
 }
 

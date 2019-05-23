@@ -1,0 +1,15 @@
+.PostDetails {
+}
+
+.PostDetails header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px;
+}
+
+.PostDetails footer {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px;
+}

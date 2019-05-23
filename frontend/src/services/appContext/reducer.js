@@ -33,6 +33,19 @@ const reducer = (state, action) => {
           posts: sortedPosts
         }
       };
+    case 'DELETE_POST':
+      const deletedPost = action.payload;
+      const filteredPosts = state.feed.posts.filter(
+        post => post._id !== deletedPost._id
+      );
+
+      return {
+        ...state,
+        feed: {
+          status: 'LOADED',
+          posts: filteredPosts
+        }
+      };
     case 'LOAD_USER':
       return {
         ...state,

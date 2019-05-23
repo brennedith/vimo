@@ -42,9 +42,9 @@ const MapView = () => {
       <div className="MapView">
         <ReactMapGL
           mapboxApiAccessToken={mapBoxToken}
+          mapStyle={'mapbox://styles/mapbox/streets-v11'}
           reuseMaps
           {...viewport}
-          mapStyle={'mapbox://styles/mapbox/streets-v11'}
           onViewportChange={({ zoom }) => updateZoom(zoom)}
         >
           {postsMarkers}

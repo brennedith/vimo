@@ -30,7 +30,7 @@ const Post = post => {
   }
 
   return (
-    <article className="Post">
+    <article className="Post" onClick={post.selectPost}>
       <div className="post-content">
         <p>
           {sentByUser ? (
