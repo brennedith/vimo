@@ -5,7 +5,7 @@ import moment from 'moment';
 import './Post.css';
 
 const Post = post => {
-  const { type, content } = post;
+  const { type, content, distance } = post;
 
   const sentByUser = type === 'sent';
   const senderPost = sentByUser ? post.to : post.from;
@@ -42,6 +42,8 @@ const Post = post => {
         </p>
         <p>
           <small>Expires {expiry}</small>
+          <span> | </span>
+          <small>{distance.toFixed()} km away</small>
         </p>
       </div>
       <div className="icon">
