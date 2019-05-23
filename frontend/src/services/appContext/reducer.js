@@ -23,6 +23,20 @@ const sortByDistance = (a, b) => {
   }
 };
 
+const filterUnique = array => {
+  const index = [];
+  const newArray = [];
+
+  array.forEach(element => {
+    if (!index.includes(element._id)) {
+      index.push(element._id);
+      newArray.push(element);
+    }
+  });
+
+  return newArray;
+};
+
 const reducer = (state, action) => {
   let posts;
   let sortedPosts;
@@ -60,21 +74,21 @@ const reducer = (state, action) => {
           type: action.payload
         }
       };
-
     case 'LOAD_POSTS':
-      posts = action.payload;
+      posts = [...state.feed.posts, ...action.payload];
       sortedPosts = posts
         .map(post => {
           post.distance = distanceBetweenUserAndPost(state, post);
           return post;
         })
         .sort(sortByDistance);
+      const uniquePosts = filterUnique(sortedPosts);
 
       return {
         ...state,
         feed: {
           status: 'LOADED',
-          posts: sortedPosts
+          posts: uniquePosts
         }
       };
     case 'DELETE_POST':

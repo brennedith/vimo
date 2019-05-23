@@ -115,8 +115,8 @@ router.get('/received', isAuth, (req, res, next) => {
     .catch(err => res.status(500).json(err));
 });
 
-/* READ: All public posts and posts sent to user */
-router.get('/nearby', isAuth, (req, res, next) => {
+/* READ: All public posts  */
+router.post('/nearby', isAuth, (req, res, next) => {
   const { longitude, latitude } = req.body;
   const { _id } = req.user;
 
@@ -132,7 +132,7 @@ router.get('/nearby', isAuth, (req, res, next) => {
         spherical: true,
         maxDistance: 500,
         query: {
-          $or: [{ to: _id }, { to: { $exists: false } }]
+          $and: [{ from: { $ne: _id } }, { to: { $exists: false } }]
         }
       }
     },
@@ -146,7 +146,16 @@ router.get('/nearby', isAuth, (req, res, next) => {
       }
     }
   ]) //TODO: Return only active posts
-    .then(posts => res.status(200).json(posts))
+    .then(posts => {
+      const responsePosts = posts.map(post => {
+        post.from = post.from[0];
+        post.from.name = `${post.from.name} (Public)`;
+
+        return post;
+      });
+
+      res.status(200).json(responsePosts);
+    })
     .catch(err => res.status(500).json(err));
 });
 

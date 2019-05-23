@@ -1,5 +1,6 @@
 import { useEffect, useContext } from 'react';
 
+import PostService from '../PostService';
 import appContext from '../context';
 
 const useLocation = () => {
@@ -13,9 +14,18 @@ const useLocation = () => {
 
         // TODO: Only update location every n' meters
         if (latitude !== coords.latitude && longitude !== coords.longitude) {
+          const body = { latitude, longitude };
+
           dispatch({
             type: 'UPDATE_LOCATION',
             payload: { latitude, longitude, accuracy, speed }
+          });
+
+          PostService.getNearby(body).then(({ data: posts }) => {
+            dispatch({
+              type: 'LOAD_POSTS',
+              payload: posts
+            });
           });
         }
       },
