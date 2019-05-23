@@ -13,7 +13,7 @@ router.post('/photo', isAuth, imageUpload.single('media'), newPost);
 function newPost(req, res, next) {
   const { _id } = req.user;
   const {
-    to,
+    to: rawTo,
     type,
     content: rawContent,
     frontCamera,
@@ -21,14 +21,17 @@ function newPost(req, res, next) {
     longitude,
     latitude
   } = req.body;
+  let to;
   let content;
 
   if (type === 'text') {
+    to = rawTo;
     content = {
-      type,
-      ...rawContent
+      ...rawContent,
+      type
     };
   } else {
+    to = rawTo.split(',');
     content = {
       type,
       frontCamera: Boolean(frontCamera),
@@ -36,8 +39,7 @@ function newPost(req, res, next) {
     };
   }
 
-  Post.create({
-    to,
+  const post = {
     from: _id,
     content,
     //expiry, //TODO: Add expiry type conversion and validation
@@ -45,7 +47,20 @@ function newPost(req, res, next) {
       type: 'Point',
       coordinates: [Number(longitude), Number(latitude)]
     }
-  })
+  };
+
+  const posts = to.map(rawTo => {
+    if (rawTo === 'public') {
+      return post;
+    } else {
+      return {
+        ...post,
+        to: rawTo
+      };
+    }
+  });
+
+  Post.create(posts)
     .then(post => res.status(200).json(post))
     .catch(err => res.status(500).json(err));
 }
