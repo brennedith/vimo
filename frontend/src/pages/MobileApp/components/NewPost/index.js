@@ -56,7 +56,8 @@ const NewPostForm = () => {
         })
         .catch(err => console.log(err.response));
     }
-  }, [type, content, access]);
+    // eslint-disable-next-line
+  }, [content, access]); // TODO: Reference github issue
 
   const saveContent = content => {
     let body;
