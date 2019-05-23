@@ -13,7 +13,7 @@ import './Details.css';
 const Details = post => {
   const mapBoxToken = process.env.REACT_APP_MAPBOX_TOKEN;
   const { state, dispatch } = useContext(appContext);
-  const { type, content } = post;
+  const { type, content, distance } = post;
 
   const userLocation = state.coords;
 
@@ -48,6 +48,8 @@ const Details = post => {
   }
 
   const onViewportChange = viewport => setViewport(viewport);
+
+  const openPost = id => {};
 
   const deletePost = id => {
     PostService.delete(id).then(({ data: post }) => {
@@ -90,9 +92,15 @@ const Details = post => {
         </ReactMapGL>
       </main>
       <footer>
-        <button type="button" className="button is-link">
-          Open
-        </button>
+        {!sentByUser && distance < 1 && (
+          <button
+            type="button"
+            className="button is-link"
+            onClick={() => openPost(post._id)}
+          >
+            Open
+          </button>
+        )}
         {sentByUser && (
           <button
             type="button"
