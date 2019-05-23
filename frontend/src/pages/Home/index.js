@@ -2,16 +2,26 @@ import React from 'react';
 
 import { Link } from 'react-router-dom';
 
-const Home = () => {
+import './index.css';
+
+const Home = ({ history }) => {
+  const userId = localStorage.getItem('userId');
+  if (userId) {
+    history.push('/app');
+  }
+
   return (
-    <div>
-      <h1 className="title">Home</h1>
-      <p>
-        <Link to="/signup">/signup</Link>
-        <br />
-        <Link to="/login">/login</Link>
-        <br />
-        <Link to="/app">/app</Link>
+    <div className="Home">
+      <h1 className="title is-1 is-tomato">VIMO</h1>
+      <h2 className="subtitle">(Public Beta)</h2>
+      <p className="auth">
+        <Link className="button is-dark" to="/signup">
+          Signup
+        </Link>
+        <span>or</span>
+        <Link className="button is-light" to="/login">
+          Login
+        </Link>
       </p>
     </div>
   );
