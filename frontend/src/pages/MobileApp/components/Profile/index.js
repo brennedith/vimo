@@ -4,11 +4,12 @@ import Content from '../Content';
 import AvatarPicture from './AvatarPicture';
 
 import ProfileService from '../../../../services/ProfileService';
+import AuthService from '../../../../services/AuthService';
 import appContext from '../../../../services/context';
 
 import './index.css';
 
-const Profile = () => {
+const Profile = ({ history }) => {
   const { state, dispatch } = useContext(appContext);
   const { user } = state.profile;
 
@@ -39,6 +40,13 @@ const Profile = () => {
       });
 
       switchEdit();
+    });
+  };
+
+  const logout = () => {
+    AuthService.logout().then(() => {
+      localStorage.removeItem('userId');
+      history.push('/');
     });
   };
 
@@ -88,7 +96,16 @@ const Profile = () => {
             </button>
           </>
         ) : (
-          <h1 className="title">{user.name}</h1>
+          <>
+            <h1 className="title">{user.name}</h1>
+            <button
+              className="button is-warning"
+              type="button"
+              onClick={logout}
+            >
+              Signout
+            </button>
+          </>
         )}
       </article>
     </Content>
