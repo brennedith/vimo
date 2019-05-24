@@ -47,8 +47,8 @@ const MapView = () => {
           {...viewport}
           onViewportChange={({ zoom }) => updateZoom(zoom)}
         >
-          {postsMarkers}
           <UserMarker latitude={latitude} longitude={longitude} />
+          {postsMarkers}
           <MapControls updateZoom={updateZoom} />
         </ReactMapGL>
       </div>
