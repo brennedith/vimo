@@ -80,7 +80,10 @@ function newPost(req, res, next) {
 router.get('/sent', isAuth, (req, res, next) => {
   const { _id } = req.user;
 
-  Post.find({ from: _id }) //TODO: Return only active posts
+  Post.find({
+    from: _id,
+    expiry: { $gt: new Date() }
+  })
     .populate('to')
     .then(posts => res.status(200).json(posts))
     .catch(err => res.status(500).json(err));
@@ -90,7 +93,10 @@ router.get('/sent', isAuth, (req, res, next) => {
 router.get('/received', isAuth, (req, res, next) => {
   const { _id } = req.user;
 
-  Post.find({ to: _id }) //TODO: Return only active posts
+  Post.find({
+    to: _id,
+    expiry: { $gt: new Date() }
+  })
     .populate('from')
     .then(posts => {
       // Filters post information
@@ -132,9 +138,13 @@ router.post('/nearby', isAuth, (req, res, next) => {
         },
         distanceField: 'distance',
         spherical: true,
-        maxDistance: 500,
+        maxDistance: 1000,
         query: {
-          $and: [{ from: { $ne: _id } }, { to: { $exists: false } }]
+          $and: [
+            { from: { $ne: _id } },
+            { to: { $exists: false } },
+            { expiry: { $gt: new Date() } }
+          ]
         }
       }
     },
@@ -147,7 +157,7 @@ router.post('/nearby', isAuth, (req, res, next) => {
         as: 'from'
       }
     }
-  ]) //TODO: Return only active posts
+  ])
     .then(posts => {
       const responsePosts = posts.map(post => {
         post.from = post.from[0];
@@ -178,14 +188,15 @@ router.post('/:id', isAuth, (req, res, next) => {
         spherical: true,
         maxDistance: 1000,
         query: {
-          $or: [
-            { $and: [{ _id: ObjectId(id) }, { to: _id }] },
-            { $and: [{ _id: ObjectId(id) }, { to: { $exists: false } }] }
+          $and: [
+            { $or: [{ from: _id }, { to: _id }, { to: { $exists: false } }] },
+            { _id: ObjectId(id) },
+            { expiry: { $gt: new Date() } }
           ]
         }
       }
     }
-  ]) //TODO: Return only active posts
+  ])
     .then(posts => res.status(200).json(posts[0]))
     .catch(err => res.status(500).json(err));
 });
