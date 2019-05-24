@@ -1,4 +1,5 @@
 import distanceBetweenPoints from '../distanceBetweenPoints';
+import initialState from './initialState';
 
 const distanceBetweenUserAndPost = (user, post) => {
   const userLocation = {
@@ -112,6 +113,8 @@ const reducer = (state, action) => {
           user: action.payload
         }
       };
+    case 'UNLOAD_USER':
+      return initialState;
     default:
       return state;
   }

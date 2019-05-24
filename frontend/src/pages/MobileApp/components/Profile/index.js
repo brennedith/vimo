@@ -46,6 +46,9 @@ const Profile = ({ history }) => {
   const logout = () => {
     AuthService.logout().then(() => {
       localStorage.removeItem('userId');
+      dispatch({
+        type: 'UNLOAD_USER'
+      });
       history.push('/');
     });
   };
