@@ -9,7 +9,7 @@ const User = require('../../models/user');
 router.post('/signup', (req, res, next) => {
   const { username, password } = req.body;
 
-  User.register({ username }, password)
+  User.register({ username, name: username }, password)
     .then(user => {
       req.logIn(user, err => {
         if (err) return res.status(500).json(err);
