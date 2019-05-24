@@ -16,7 +16,7 @@ const Friends = () => {
   const [people, setPeople] = useState([]);
 
   useEffect(() => {
-    if (query === '') {
+    if (query.length <= 3) {
       setPeople(friends);
     } else {
       FriendsService.search(query).then(({ data: results }) =>
