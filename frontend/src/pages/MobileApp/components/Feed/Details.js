@@ -103,7 +103,7 @@ const Details = post => {
         </ReactMapGL>
       </main>
       <footer>
-        {!sentByUser && distance < 1 && (
+        {distance <= 1 && (
           <button
             type="button"
             className="button is-link"
