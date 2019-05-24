@@ -26,6 +26,8 @@ const Details = post => {
       : senderPost.username
     : 'Public'; // TODO: Change
   const expiry = moment(post.expiry).fromNow();
+  const distanceLegend =
+    distance <= 1 ? 'Nearby' : `${distance.toFixed()} kms away`;
   const [longitude, latitude] = post.loc.coordinates;
   const [viewport, setViewport] = useState({
     width: '100%',
@@ -82,7 +84,11 @@ const Details = post => {
       <header>
         <div>
           <h1 className="title">{sender}</h1>
-          <h2 className="subtitle">Expires {expiry}</h2>
+          <h2 className="subtitle">
+            Expires {expiry}
+            <br />
+            {distanceLegend}
+          </h2>
         </div>
         <div>
           <h1 className="title">
@@ -101,6 +107,11 @@ const Details = post => {
           <UserMarker {...userLocation} />
           <PostMarker {...post} />
         </ReactMapGL>
+        {distance > 1 && (
+          <p className="has-text-danger">
+            Sorry, you are not close enough to open this VIMO.
+          </p>
+        )}
       </main>
       <footer>
         {distance <= 1 && (

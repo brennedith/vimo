@@ -16,7 +16,7 @@ const Post = post => {
     : 'Public';
   const expiry = moment(post.expiry).fromNow();
   const distance =
-    post.distance < 1 ? 'Nearby' : `${post.distance.toFixed()} kms away`;
+    post.distance <= 1 ? 'Nearby' : `${post.distance.toFixed()} kms away`;
 
   let postIcon;
   switch (content.type) {

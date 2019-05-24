@@ -12,6 +12,11 @@
   margin: 20px;
 }
 
+.PostDetails .has-text-danger {
+  padding: 5px;
+  text-align: center;
+}
+
 .PostDetails footer {
   display: flex;
   justify-content: space-around;
