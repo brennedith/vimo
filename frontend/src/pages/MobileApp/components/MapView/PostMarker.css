@@ -1,0 +1,10 @@
+.PostMarker {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  background: tomato;
+  color: white;
+  border-radius: 50%;
+}

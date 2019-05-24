@@ -23,7 +23,9 @@ const PostMarker = post => {
   // TODO: User profile photo
   return (
     <Marker latitude={latitude} longitude={longitude}>
-      <span className={`fa fa-${postIcon}`} />
+      <div className="PostMarker">
+        <span className={`fa fa-${postIcon}`} />
+      </div>
     </Marker>
   );
 };
