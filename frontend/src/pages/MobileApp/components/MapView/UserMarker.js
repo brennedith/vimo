@@ -7,10 +7,12 @@ const UserMarker = ({ latitude, longitude }) => (
   <Marker
     latitude={latitude}
     longitude={longitude}
-    offsetTop={-8}
-    offsetLeft={-8}
+    offsetTop={-17}
+    offsetLeft={-17}
   >
-    <div className="UserMarker" />
+    <div className="UserMarker">
+      <span className="fas fa-street-view fa-lg" />
+    </div>
   </Marker>
 );
 
